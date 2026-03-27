@@ -1,0 +1,60 @@
+{# Extend the global front layout. #}
+{% extends 'base.html.twig' %}
+{# Define SEO title for page detail. #}
+{% block title %}{{ page.title }} - Atlas CMS{% endblock %}
+{# Define SEO description for page detail. #}
+{% set metaDescription = page.metaDescription ?: ('Page publique : ' ~ page.title) %}
+{# Define main body. #}
+{% block body %}
+    {# Open page detail section. #}
+    <section class="ui-section">
+        {# Open centered container. #}
+        <div class="container">
+            {# Open detail row. #}
+            <div class="row g-4">
+                {# Open main content column. #}
+                <div class="col-12 col-lg-8 reveal">
+                    {# Open page detail card. #}
+                    <article class="card front-card border-0">
+                        {# Open page content body. #}
+                        <div class="card-body p-4 p-md-5">
+                            {# Show category chip when available. #}
+                            {% if page.category %}
+                                <span class="ui-chip mb-3">{{ page.category.name }}</span>
+                            {% endif %}
+                            {# Show page title. #}
+                            <h1 class="ui-heading display-6 mb-3">{{ page.title }}</h1>
+                            {# Show update date. #}
+                            <p class="small text-muted mb-4">Mise a jour le {{ page.updatedAt|date('d/m/Y H:i') }}</p>
+                            {# Show rich text content. #}
+                            <div class="content-rich">{{ page.content|raw }}</div>
+                        </div>
+                    </article>
+                </div>
+                {# Open side column. #}
+                <aside class="col-12 col-lg-4">
+                    {# Open information panel. #}
+                    <div class="front-panel p-4 mb-3 reveal">
+                        {# Show heading. #}
+                        <h2 class="h6">Informations</h2>
+                        {# Show slug value. #}
+                        <p class="small text-muted mb-2">Slug URL: <code>{{ page.slug }}</code></p>
+                        {# Show status badge. #}
+                        <p class="small text-muted mb-0">Statut: <span class="badge text-bg-success">Validee</span></p>
+                    </div>
+                    {# Show linked gallery panel when available. #}
+                    {% if page.gallery %}
+                        <div class="front-panel p-4 reveal">
+                            {# Show panel heading. #}
+                            <h2 class="h6">Galerie associee</h2>
+                            {# Show gallery title. #}
+                            <p class="small text-muted mb-3">{{ page.gallery.name }}</p>
+                            {# Show link to gallery detail. #}
+                            <a class="btn btn-outline-primary btn-sm" href="{{ path('front_gallery_show', {id: page.gallery.id, slug: page.gallery.name|lower|replace({' ': '-', '/': '-'})}) }}">Voir la galerie</a>
+                        </div>
+                    {% endif %}
+                </aside>
+            </div>
+        </div>
+    </section>
+{% endblock %}

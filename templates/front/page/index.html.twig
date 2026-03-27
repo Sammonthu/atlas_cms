@@ -1,0 +1,35 @@
+{# Extend the global front layout. #}
+{% extends 'base.html.twig' %}
+{# Define SEO title for pages listing. #}
+{% block title %}Pages publiques - Atlas CMS{% endblock %}
+{# Define SEO description. #}
+{% set metaDescription = 'Consultez les pages publiques validees du CMS Atlas.' %}
+{# Define main body. #}
+{% block body %}
+    {# Open pages listing section. #}
+    <section class="ui-section">
+        {# Open centered container. #}
+        <div class="container">
+            {# Open heading block. #}
+            <div class="mb-4 reveal">
+                {# Render chip label. #}
+                <span class="ui-chip mb-2">Pages</span>
+                {# Render page title. #}
+                <h1 class="ui-heading display-6 mb-2">Pages publiques</h1>
+                {# Render intro text. #}
+                <p class="ui-intro mb-0">Toutes les pages valides du CMS, presentees dans une interface claire et premium.</p>
+            </div>
+            {# Open cards grid. #}
+            <div class="row g-4">
+                {# Loop through pages. #}
+                {% for page in pages %}
+                    <div class="col-12 col-md-6 col-xl-4 reveal">
+                        {% include 'front/_partials/cards/page_card.html.twig' with { page: page } only %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">Aucune page disponible pour l'instant.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

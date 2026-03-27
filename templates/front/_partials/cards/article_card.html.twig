@@ -1,0 +1,26 @@
+{# Open reusable article card. #}
+<article class="card front-card h-100 border-0">
+    {# Open card body. #}
+    <div class="card-body p-4 position-relative">
+        {# Show category badge when available. #}
+        {% if article.category %}
+            <span class="ui-chip mb-3">{{ article.category.name }}</span>
+        {% endif %}
+        {# Show article title. #}
+        <h3 class="front-card-title h5 mb-2">{{ article.title }}</h3>
+        {# Show publish date. #}
+        <p class="small text-muted mb-3">{{ article.publishedAt ? article.publishedAt|date('d/m/Y') : article.createdAt|date('d/m/Y') }}</p>
+        {# Show article teaser. #}
+        <p class="front-card-text small mb-3">{{ article.metaDescription ?: 'Article du blog Atlas CMS.' }}</p>
+        {# Show up to three tags. #}
+        {% if article.tags|length > 0 %}
+            <div class="d-flex flex-wrap gap-1 mb-3">
+                {% for tag in article.tags|slice(0, 3) %}
+                    <span class="badge text-bg-light border">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {# Show detail link. #}
+        <a class="stretched-link text-decoration-none" href="{{ path('front_blog_show', {slug: article.slug}) }}">Lire l'article</a>
+    </div>
+</article>

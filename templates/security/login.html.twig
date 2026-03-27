@@ -1,0 +1,67 @@
+{# Extend the global application layout. #}
+{% extends 'base.html.twig' %}
+{# Define SEO title for login page. #}
+{% block title %}Connexion securisee - Atlas CMS{% endblock %}
+{# Define SEO description for login page. #}
+{% set metaDescription = 'Connexion securisee au back-office Atlas CMS.' %}
+{# Define page main body. #}
+{% block body %}
+    {# Open full-height authentication shell. #}
+    <section class="auth-shell py-5">
+        {# Open centered bootstrap container. #}
+        <div class="container">
+            {# Open centered row. #}
+            <div class="row justify-content-center align-items-center min-vh-75">
+                {# Open responsive login column. #}
+                <div class="col-12 col-md-9 col-lg-6 col-xl-5 reveal">
+                    {# Open premium login card. #}
+                    <div class="auth-card p-4 p-md-5">
+                        {# Open branding block. #}
+                        <div class="mb-4 text-center">
+                            {# Show brand badge. #}
+                            <span class="auth-badge">Atlas CMS</span>
+                            {# Show title. #}
+                            <h1 class="ui-heading h2 mt-3 mb-2">Connexion au back-office</h1>
+                            {# Show subtitle. #}
+                            <p class="text-muted mb-0">Espace securise reserve aux comptes autorises.</p>
+                        </div>
+
+                        {# Render authentication error when present. #}
+                        {% if error %}
+                            <div class="alert alert-danger d-flex align-items-start gap-2" role="alert">
+                                <i class="bi bi-shield-lock-fill"></i>
+                                <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            </div>
+                        {% endif %}
+
+                        {# Open login form. #}
+                        <form method="post" novalidate>
+                            {# Open email field group. #}
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Adresse email</label>
+                                <input id="email" name="email" type="email" class="form-control form-control-lg" value="{{ last_username }}" autocomplete="email" placeholder="vous@exemple.com" required autofocus>
+                            </div>
+
+                            {# Open password field group. #}
+                            <div class="mb-4">
+                                <label for="password" class="form-label">Mot de passe</label>
+                                <input id="password" name="password" type="password" class="form-control form-control-lg" autocomplete="current-password" placeholder="Votre mot de passe" required>
+                            </div>
+
+                            {# Inject CSRF token. #}
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                            {# Open action block. #}
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary btn-lg" type="submit">Se connecter</button>
+                            </div>
+                        </form>
+
+                        {# Show security note. #}
+                        <p class="text-muted small mt-4 mb-0 text-center">Acces journalise. Protection CSRF active.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

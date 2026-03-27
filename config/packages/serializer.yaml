@@ -1,0 +1,10 @@
+# Configure le composant Serializer pour preparer l'extension API REST.
+framework:
+    # Active le serializer natif Symfony.
+    serializer:
+        # Active la collecte des annotations et attributs de groupes.
+        enable_attributes: true
+        # Definis un contexte par defaut compatible API.
+        default_context:
+            # Ignore les valeurs nulles pour alleger les payloads JSON.
+            skip_null_values: true

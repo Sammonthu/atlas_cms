@@ -1,0 +1,145 @@
+{# Extend the global front layout. #}
+{% extends 'base.html.twig' %}
+{# Define page title for SEO. #}
+{% block title %}Atlas CMS - Accueil{% endblock %}
+{# Define page meta description. #}
+{% set metaDescription = 'Bienvenue sur Atlas CMS : pages publiques, blog editorial et galeries photos.' %}
+{# Define main page body. #}
+{% block body %}
+    {# Open immersive hero section. #}
+    <section class="front-hero">
+        {# Open centered container. #}
+        <div class="container">
+            {# Open hero grid row. #}
+            <div class="row g-4 align-items-center">
+                {# Open left hero text column. #}
+                <div class="col-12 col-lg-7 reveal">
+                    {# Render hero chip. #}
+                    <span class="ui-chip mb-3">Atlas CMS · Experience fluide</span>
+                    {# Render hero heading. #}
+                    <h1 class="front-hero__title mb-3">Publiez avec clarte. Presentez avec elegance.</h1>
+                    {# Render hero subtitle. #}
+                    <p class="front-hero__subtitle mb-4">Un front-office minimaliste, moderne et premium pour valoriser pages, articles, galeries et commentaires avec une vraie qualite de soutenance.</p>
+                    {# Open hero action group. #}
+                    <div class="d-flex flex-wrap gap-2">
+                        {# Render primary CTA. #}
+                        <a class="btn btn-primary btn-lg" href="{{ path('front_page_index') }}">Explorer les pages</a>
+                        {# Render secondary CTA. #}
+                        <a class="btn btn-outline-primary btn-lg" href="{{ path('front_blog_index') }}">Lire le blog</a>
+                    </div>
+                </div>
+                {# Open right hero stats column. #}
+                <div class="col-12 col-lg-5 reveal">
+                    {# Open hero stats glass panel. #}
+                    <div class="front-hero-card">
+                        {# Render first stat row. #}
+                        <div class="front-hero-card__item">
+                            <p class="front-hero-card__label">Pages validees</p>
+                            <p class="front-hero-card__value">{{ latestPages|length }}</p>
+                        </div>
+                        {# Render second stat row. #}
+                        <div class="front-hero-card__item">
+                            <p class="front-hero-card__label">Articles recents</p>
+                            <p class="front-hero-card__value">{{ latestArticles|length }}</p>
+                        </div>
+                        {# Render third stat row. #}
+                        <div class="front-hero-card__item">
+                            <p class="front-hero-card__label">Galeries visibles</p>
+                            <p class="front-hero-card__value">{{ latestGalleries|length }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# Open recent pages section. #}
+    <section class="ui-section">
+        {# Open centered container. #}
+        <div class="container">
+            {# Open section header row. #}
+            <div class="d-flex justify-content-between align-items-end mb-4 reveal">
+                {# Render section title. #}
+                <div>
+                    {# Render section chip. #}
+                    <span class="ui-chip mb-2">Pages</span>
+                    {# Render heading. #}
+                    <h2 class="ui-heading h2 mb-0">Pages recentes</h2>
+                </div>
+                {# Render section link. #}
+                <a class="text-decoration-none" href="{{ path('front_page_index') }}">Tout voir</a>
+            </div>
+            {# Open cards grid. #}
+            <div class="row g-4">
+                {# Loop through recent pages. #}
+                {% for page in latestPages %}
+                    <div class="col-12 col-md-6 col-xl-4 reveal">
+                        {% include 'front/_partials/cards/page_card.html.twig' with { page: page } only %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">Aucune page validee pour le moment.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    {# Open recent articles section. #}
+    <section class="ui-section ui-section-soft">
+        {# Open centered container. #}
+        <div class="container">
+            {# Open section header row. #}
+            <div class="d-flex justify-content-between align-items-end mb-4 reveal">
+                {# Render section title group. #}
+                <div>
+                    {# Render section chip. #}
+                    <span class="ui-chip mb-2">Blog</span>
+                    {# Render heading. #}
+                    <h2 class="ui-heading h2 mb-0">Articles recents</h2>
+                </div>
+                {# Render section link. #}
+                <a class="text-decoration-none" href="{{ path('front_blog_index') }}">Tout voir</a>
+            </div>
+            {# Open cards grid. #}
+            <div class="row g-4">
+                {# Loop through recent articles. #}
+                {% for article in latestArticles %}
+                    <div class="col-12 col-md-6 col-xl-4 reveal">
+                        {% include 'front/_partials/cards/article_card.html.twig' with { article: article } only %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">Aucun article valide pour le moment.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    {# Open featured galleries section. #}
+    <section class="ui-section">
+        {# Open centered container. #}
+        <div class="container">
+            {# Open section header row. #}
+            <div class="d-flex justify-content-between align-items-end mb-4 reveal">
+                {# Render section title group. #}
+                <div>
+                    {# Render section chip. #}
+                    <span class="ui-chip mb-2">Galeries</span>
+                    {# Render heading. #}
+                    <h2 class="ui-heading h2 mb-0">Galeries en vedette</h2>
+                </div>
+                {# Render section link. #}
+                <a class="text-decoration-none" href="{{ path('front_gallery_index') }}">Tout voir</a>
+            </div>
+            {# Open cards grid. #}
+            <div class="row g-4">
+                {# Loop through galleries. #}
+                {% for gallery in latestGalleries %}
+                    <div class="col-12 col-md-6 col-xl-3 reveal">
+                        {% include 'front/_partials/cards/gallery_card.html.twig' with { gallery: gallery } only %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">Aucune galerie disponible pour le moment.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

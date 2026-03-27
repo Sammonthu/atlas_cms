@@ -1,0 +1,15 @@
+# Configure le moteur Twig.
+twig:
+    # Limite les templates charges au pattern Twig.
+    file_name_pattern: '*.twig'
+    # Active le mode debug sur environnement debug.
+    debug: '%kernel.debug%'
+    # Active les variables strictes en mode debug.
+    strict_variables: '%kernel.debug%'
+
+# Ajuste la configuration Twig pour l'environnement de test.
+when@test:
+    # Redefinit la section Twig en test.
+    twig:
+        # Active strictement les variables en test pour detecter les oublis.
+        strict_variables: true

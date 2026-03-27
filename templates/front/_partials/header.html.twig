@@ -1,0 +1,21 @@
+{# Open the global front header. #}
+<header class="front-header sticky-top" id="siteHeader">
+    {# Open centered container. #}
+    <div class="container">
+        {# Open responsive navbar. #}
+        <nav class="navbar navbar-expand-lg py-3">
+            {# Show text brand. #}
+            <a class="navbar-brand front-brand" href="{{ path('home') }}">Atlas CMS</a>
+            {# Show mobile burger button. #}
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#frontNav" aria-controls="frontNav" aria-expanded="false" aria-label="Afficher la navigation">
+                {# Show burger icon. #}
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            {# Open collapsible navigation area. #}
+            <div id="frontNav" class="collapse navbar-collapse">
+                {# Include main navigation links and actions. #}
+                {% include 'front/_partials/nav.html.twig' %}
+            </div>
+        </nav>
+    </div>
+</header>

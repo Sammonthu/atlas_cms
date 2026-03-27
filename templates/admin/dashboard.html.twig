@@ -1,0 +1,101 @@
+{# Étend le layout EasyAdmin pour conserver la structure back-office. #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{# Définit le titre de l'onglet navigateur. #}
+{% block page_title %}Tableau de bord Atlas CMS{% endblock %}
+{# Définit le contenu principal du dashboard. #}
+{% block main %}
+    {# Ouvre l'en-tête visuel du dashboard. #}
+    <section class="admin-hero mb-4">
+        {# Affiche le titre principal. #}
+        <h1 class="admin-hero__title">Tableau de bord</h1>
+        {# Affiche le sous-titre explicatif. #}
+        <p class="admin-hero__subtitle">Vue rapide sur les contenus, la modération et les accès.</p>
+    </section>
+
+    {# Ouvre la grille des statistiques globales. #}
+    <section class="row g-3 mb-4">
+        {# Carte utilisateurs. #}
+        <div class="col-12 col-md-6 col-xl-4">
+            <article class="admin-kpi-card">
+                <p class="admin-kpi-label">Utilisateurs</p>
+                <p class="admin-kpi-value">{{ stats.users }}</p>
+            </article>
+        </div>
+        {# Carte pages. #}
+        <div class="col-12 col-md-6 col-xl-4">
+            <article class="admin-kpi-card">
+                <p class="admin-kpi-label">Pages</p>
+                <p class="admin-kpi-value">{{ stats.pages }}</p>
+            </article>
+        </div>
+        {# Carte articles. #}
+        <div class="col-12 col-md-6 col-xl-4">
+            <article class="admin-kpi-card">
+                <p class="admin-kpi-label">Articles</p>
+                <p class="admin-kpi-value">{{ stats.articles }}</p>
+            </article>
+        </div>
+        {# Carte commentaires. #}
+        <div class="col-12 col-md-6 col-xl-4">
+            <article class="admin-kpi-card">
+                <p class="admin-kpi-label">Commentaires</p>
+                <p class="admin-kpi-value">{{ stats.comments }}</p>
+            </article>
+        </div>
+        {# Carte galeries. #}
+        <div class="col-12 col-md-6 col-xl-4">
+            <article class="admin-kpi-card">
+                <p class="admin-kpi-label">Galeries</p>
+                <p class="admin-kpi-value">{{ stats.galleries }}</p>
+            </article>
+        </div>
+        {# Carte images. #}
+        <div class="col-12 col-md-6 col-xl-4">
+            <article class="admin-kpi-card">
+                <p class="admin-kpi-label">Images</p>
+                <p class="admin-kpi-value">{{ stats.images }}</p>
+            </article>
+        </div>
+    </section>
+
+    {# Ouvre la ligne modération + actions rapides. #}
+    <section class="row g-3">
+        {# Colonne des statuts de modération. #}
+        <div class="col-12 col-lg-6">
+            <article class="admin-panel">
+                <h2 class="admin-panel__title">Modération</h2>
+                <ul class="admin-list">
+                    <li class="admin-list__item">
+                        <span>Pages en attente</span>
+                        <span class="badge text-bg-warning">{{ moderation.pendingPages }}</span>
+                    </li>
+                    <li class="admin-list__item">
+                        <span>Articles en attente</span>
+                        <span class="badge text-bg-warning">{{ moderation.pendingArticles }}</span>
+                    </li>
+                    <li class="admin-list__item">
+                        <span>Commentaires en attente</span>
+                        <span class="badge text-bg-warning">{{ moderation.pendingComments }}</span>
+                    </li>
+                </ul>
+            </article>
+        </div>
+
+        {# Colonne des raccourcis de navigation. #}
+        <div class="col-12 col-lg-6">
+            <article class="admin-panel">
+                <h2 class="admin-panel__title">Actions rapides</h2>
+                <div class="d-flex flex-wrap gap-2">
+                    <a class="btn btn-primary btn-sm" href="{{ quickLinks.pages }}">Gérer les pages</a>
+                    <a class="btn btn-primary btn-sm" href="{{ quickLinks.articles }}">Gérer les articles</a>
+                    <a class="btn btn-outline-primary btn-sm" href="{{ quickLinks.comments }}">Modérer les commentaires</a>
+                    <a class="btn btn-outline-primary btn-sm" href="{{ quickLinks.galleries }}">Gérer les galeries</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a class="btn btn-dark btn-sm" href="{{ quickLinks.users }}">Gérer les utilisateurs</a>
+                    {% endif %}
+                </div>
+            </article>
+        </div>
+    </section>
+{% endblock %}
+

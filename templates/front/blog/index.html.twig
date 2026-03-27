@@ -1,0 +1,35 @@
+{# Extend the global front layout. #}
+{% extends 'base.html.twig' %}
+{# Define SEO title. #}
+{% block title %}Blog - Atlas CMS{% endblock %}
+{# Define SEO description. #}
+{% set metaDescription = 'Actualites et contenus editoriaux valides du CMS Atlas.' %}
+{# Define page body. #}
+{% block body %}
+    {# Open blog listing section. #}
+    <section class="ui-section">
+        {# Open centered container. #}
+        <div class="container">
+            {# Open heading block. #}
+            <div class="mb-4 reveal">
+                {# Render chip label. #}
+                <span class="ui-chip mb-2">Blog</span>
+                {# Render page title. #}
+                <h1 class="ui-heading display-6 mb-2">Articles</h1>
+                {# Render intro text. #}
+                <p class="ui-intro mb-0">Retrouvez les publications editoriales validees du CMS dans une presentation claire et lisible.</p>
+            </div>
+            {# Open article cards grid. #}
+            <div class="row g-4">
+                {# Loop through articles. #}
+                {% for article in articles %}
+                    <div class="col-12 col-md-6 col-xl-4 reveal">
+                        {% include 'front/_partials/cards/article_card.html.twig' with { article: article } only %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">Aucun article disponible pour l'instant.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

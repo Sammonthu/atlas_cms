@@ -1,0 +1,43 @@
+{# Extend the global front layout. #}
+{% extends 'base.html.twig' %}
+{# Define SEO title for gallery detail. #}
+{% block title %}{{ gallery.name }} - Galerie Atlas CMS{% endblock %}
+{# Define SEO description for gallery detail. #}
+{% set metaDescription = gallery.description ?: ('Galerie photo : ' ~ gallery.name) %}
+{# Define main body. #}
+{% block body %}
+    {# Open gallery detail section. #}
+    <section class="ui-section">
+        {# Open centered container. #}
+        <div class="container">
+            {# Open gallery header block. #}
+            <header class="mb-4 reveal">
+                {# Render chip label. #}
+                <span class="ui-chip mb-2">Galerie</span>
+                {# Render gallery title. #}
+                <h1 class="ui-heading display-6 mb-2">{{ gallery.name }}</h1>
+                {# Render gallery description. #}
+                <p class="ui-intro mb-0">{{ gallery.description ?: 'Galerie photo publique.' }}</p>
+            </header>
+
+            {# Open image grid. #}
+            <div class="row g-4">
+                {# Loop through gallery images. #}
+                {% for image in gallery.images %}
+                    <div class="col-6 col-md-4 col-lg-3 reveal">
+                        <figure class="card front-card border-0 h-100 overflow-hidden">
+                            <img src="{{ image.filePath }}" class="card-img-top" alt="{{ image.caption ?: gallery.name }}">
+                            {% if image.caption %}
+                                <figcaption class="card-body py-2">
+                                    <small class="text-muted">{{ image.caption }}</small>
+                                </figcaption>
+                            {% endif %}
+                        </figure>
+                    </div>
+                {% else %}
+                    <p class="text-muted">Cette galerie ne contient pas encore d'images.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

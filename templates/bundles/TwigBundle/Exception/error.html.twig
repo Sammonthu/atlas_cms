@@ -1,0 +1,28 @@
+{# Herite du layout principal pour conserver le design global. #}
+{% extends 'base.html.twig' %}
+{# Definit le titre de la page d'erreur generique. #}
+{% block title %}Erreur - Atlas CMS{% endblock %}
+{# Definit le contenu principal d'erreur generique. #}
+{% block body %}
+    {# Ouvre la section d'erreur. #}
+    <section class="py-5">
+        {# Ouvre le conteneur Bootstrap. #}
+        <div class="container">
+            {# Ouvre la ligne centree. #}
+            <div class="row justify-content-center">
+                {# Ouvre la colonne responsive. #}
+                <div class="col-12 col-lg-8">
+                    {# Ouvre la carte d'erreur. #}
+                    <div class="error-card shadow-sm border-0 p-4 p-md-5 text-center">
+                        {# Affiche le titre explicatif. #}
+                        <h1 class="h3 mb-3">Une erreur est survenue</h1>
+                        {# Affiche la description utilisateur. #}
+                        <p class="text-muted mb-4">La requete n'a pas pu etre traitee correctement.</p>
+                        {# Affiche un bouton de retour accueil. #}
+                        <a href="{{ path('home') }}" class="btn btn-primary">Retour a l'accueil</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

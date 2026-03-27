@@ -1,0 +1,84 @@
+{# Extend the global front layout. #}
+{% extends 'base.html.twig' %}
+{# Define SEO title for article detail. #}
+{% block title %}{{ article.title }} - Blog Atlas CMS{% endblock %}
+{# Define SEO description for article detail. #}
+{% set metaDescription = article.metaDescription ?: ('Article de blog : ' ~ article.title) %}
+{# Define main body. #}
+{% block body %}
+    {# Open article detail section. #}
+    <section class="ui-section">
+        {# Open centered container. #}
+        <div class="container">
+            {# Open detail row. #}
+            <div class="row g-4">
+                {# Open main content column. #}
+                <div class="col-12 col-lg-8 reveal">
+                    {# Open article card. #}
+                    <article class="card front-card border-0">
+                        {# Open article content body. #}
+                        <div class="card-body p-4 p-md-5">
+                            {# Show category chip when available. #}
+                            {% if article.category %}
+                                <span class="ui-chip mb-3">{{ article.category.name }}</span>
+                            {% endif %}
+                            {# Show article title. #}
+                            <h1 class="ui-heading display-6 mb-3">{{ article.title }}</h1>
+                            {# Show article metadata. #}
+                            <p class="small text-muted mb-4">
+                                Publie le {{ article.publishedAt ? article.publishedAt|date('d/m/Y H:i') : article.createdAt|date('d/m/Y H:i') }}
+                                {% if article.author %} par {{ article.author.name }}{% endif %}
+                            </p>
+                            {# Show article rich content. #}
+                            <div class="content-rich">{{ article.content|raw }}</div>
+                            {# Show tags block when available. #}
+                            {% if article.tags|length > 0 %}
+                                <hr class="my-4">
+                                <div class="d-flex flex-wrap gap-2">
+                                    {% for tag in article.tags %}
+                                        <span class="badge text-bg-light border">{{ tag.name }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </article>
+                </div>
+
+                {# Open side column. #}
+                <aside class="col-12 col-lg-4">
+                    {# Open approved comments panel. #}
+                    <div class="front-panel p-4 mb-3 reveal">
+                        {# Show comments title. #}
+                        <h2 class="h5 mb-3">Commentaires valides</h2>
+                        {# Open comments list. #}
+                        <div class="d-flex flex-column gap-3">
+                            {% for comment in approvedComments %}
+                                <article class="front-card p-3">
+                                    <p class="small mb-2">{{ comment.content }}</p>
+                                    <p class="small text-muted mb-0">{{ comment.author ? comment.author.name : 'Utilisateur' }} · {{ comment.createdAt|date('d/m/Y H:i') }}</p>
+                                </article>
+                            {% else %}
+                                <p class="small text-muted mb-0">Aucun commentaire valide pour cet article.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {# Open comment form panel. #}
+                    <div class="front-panel p-4 reveal">
+                        {# Show panel title. #}
+                        <h2 class="h6 mb-3">Ajouter un commentaire</h2>
+                        {% if app.user %}
+                            {{ form_start(commentForm, { action: path('front_blog_comment_create', {slug: article.slug}) }) }}
+                                {{ form_row(commentForm.content) }}
+                                <button type="submit" class="btn btn-primary btn-sm">Envoyer</button>
+                            {{ form_end(commentForm) }}
+                        {% else %}
+                            <p class="small text-muted mb-3">Connecte-toi pour participer a la discussion.</p>
+                            <a class="btn btn-outline-primary btn-sm" href="{{ path('app_login') }}">Se connecter</a>
+                        {% endif %}
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+{% endblock %}

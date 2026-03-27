@@ -1,0 +1,165 @@
+/* Définit des variables visuelles dédiées au back-office. */
+:root {
+    /* Définit la couleur de fond principale admin. */
+    --admin-surface: #f4f7fb;
+    /* Définit la couleur primaire admin. */
+    --admin-primary: #0f4c81;
+    /* Définit la couleur texte forte admin. */
+    --admin-text-strong: #1f2a37;
+}
+
+/* Applique un fond clair premium à la zone de contenu EasyAdmin. */
+.content-wrapper {
+    /* Définit un fond subtil en dégradé léger. */
+    background: linear-gradient(180deg, #f8fbff 0%, var(--admin-surface) 100%);
+}
+
+/* Stylise le bandeau d'introduction du dashboard. */
+.admin-hero {
+    /* Ajoute un fond coloré premium. */
+    background: linear-gradient(135deg, #0f4c81 0%, #1f7a8c 100%);
+    /* Ajoute un espacement interne confortable. */
+    padding: 1.5rem;
+    /* Arrondit les coins du bloc. */
+    border-radius: 1rem;
+    /* Applique le texte en blanc. */
+    color: #ffffff;
+}
+
+/* Stylise le titre principal du dashboard. */
+.admin-hero__title {
+    /* Supprime les marges par défaut du titre. */
+    margin: 0;
+    /* Ajuste la taille du titre. */
+    font-size: 1.6rem;
+    /* Renforce la graisse du titre. */
+    font-weight: 700;
+}
+
+/* Stylise le sous-titre du dashboard. */
+.admin-hero__subtitle {
+    /* Définit la marge supérieure du sous-titre. */
+    margin: 0.5rem 0 0;
+    /* Réduit l'opacité pour la hiérarchie visuelle. */
+    opacity: 0.9;
+}
+
+/* Stylise les cartes KPI du dashboard. */
+.admin-kpi-card {
+    /* Définit un fond blanc net. */
+    background: #ffffff;
+    /* Arrondit les coins de la carte. */
+    border-radius: 0.9rem;
+    /* Ajoute une bordure discrète. */
+    border: 1px solid #e7edf5;
+    /* Ajoute un padding interne. */
+    padding: 1rem 1.1rem;
+    /* Ajoute une ombre légère. */
+    box-shadow: 0 10px 30px rgba(15, 76, 129, 0.06);
+}
+
+/* Stylise le libellé des KPI. */
+.admin-kpi-label {
+    /* Supprime la marge par défaut. */
+    margin: 0;
+    /* Définit la couleur secondaire du texte. */
+    color: #5b6b7c;
+    /* Réduit la taille du texte de label. */
+    font-size: 0.9rem;
+}
+
+/* Stylise la valeur des KPI. */
+.admin-kpi-value {
+    /* Définit la marge supérieure de la valeur. */
+    margin: 0.25rem 0 0;
+    /* Renforce la couleur de la valeur. */
+    color: var(--admin-text-strong);
+    /* Augmente la taille visuelle de la valeur. */
+    font-size: 1.7rem;
+    /* Renforce la graisse visuelle. */
+    font-weight: 700;
+}
+
+/* Stylise les panneaux secondaires du dashboard. */
+.admin-panel {
+    /* Définit un fond blanc pour la lisibilité. */
+    background: #ffffff;
+    /* Arrondit les coins des panneaux. */
+    border-radius: 0.9rem;
+    /* Ajoute une bordure discrète. */
+    border: 1px solid #e7edf5;
+    /* Ajoute un padding interne. */
+    padding: 1rem 1.1rem;
+    /* Ajoute une ombre légère. */
+    box-shadow: 0 10px 30px rgba(15, 76, 129, 0.06);
+}
+
+/* Stylise le titre des panneaux secondaires. */
+.admin-panel__title {
+    /* Supprime la marge par défaut. */
+    margin: 0 0 0.8rem;
+    /* Définit la taille de titre de section. */
+    font-size: 1.05rem;
+    /* Renforce la graisse du titre. */
+    font-weight: 700;
+}
+
+/* Réinitialise la liste custom du dashboard. */
+.admin-list {
+    /* Supprime les puces par défaut. */
+    list-style: none;
+    /* Supprime les paddings par défaut. */
+    padding: 0;
+    /* Supprime les marges par défaut. */
+    margin: 0;
+}
+
+/* Stylise chaque ligne de la liste custom. */
+.admin-list__item {
+    /* Affiche les éléments sur une ligne. */
+    display: flex;
+    /* Espace les éléments horizontalement. */
+    justify-content: space-between;
+    /* Centre verticalement les éléments. */
+    align-items: center;
+    /* Ajoute un espacement vertical. */
+    padding: 0.45rem 0;
+    /* Ajoute une bordure de séparation. */
+    border-bottom: 1px solid #edf2f9;
+}
+
+/* Supprime la bordure sur le dernier item. */
+.admin-list__item:last-child {
+    /* Retire la bordure basse du dernier item. */
+    border-bottom: none;
+}
+
+/* Adoucit le mode sombre EasyAdmin avec un noir moins profond. */
+[data-bs-theme='dark'] {
+    /* Remplace le fond global par un anthracite plus doux. */
+    --bs-body-bg: #1f2329;
+    /* Éclaircit légèrement la surface secondaire. */
+    --bs-secondary-bg: #262b32;
+    /* Éclaircit légèrement la surface tertiaire. */
+    --bs-tertiary-bg: #2c323a;
+    /* Adoucit les bordures en mode sombre. */
+    --bs-border-color: #3a4049;
+}
+
+/* Adoucit le panneau latéral en mode sombre. */
+[data-bs-theme='dark'] #main-menu {
+    /* Applique un fond anthracite premium au menu. */
+    background: #232831;
+}
+
+/* Adoucit la barre supérieure en mode sombre. */
+[data-bs-theme='dark'] .content-top {
+    /* Applique un anthracite plus clair à la topbar. */
+    background: #252b33;
+}
+
+/* Adoucit le fond de la zone de contenu en mode sombre. */
+[data-bs-theme='dark'] .content-wrapper {
+    /* Applique un dégradé sombre mais moins agressif. */
+    background: linear-gradient(180deg, #222830 0%, #1f242c 100%);
+}

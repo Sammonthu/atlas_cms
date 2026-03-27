@@ -1,0 +1,29 @@
+{# Open main navigation list. #}
+<ul class="navbar-nav me-auto mb-3 mb-lg-0 gap-1">
+    {# Render Home link. #}
+    <li class="nav-item"><a class="nav-link" href="{{ path('home') }}">Accueil</a></li>
+    {# Render Pages link. #}
+    <li class="nav-item"><a class="nav-link" href="{{ path('front_page_index') }}">Pages</a></li>
+    {# Render Blog link. #}
+    <li class="nav-item"><a class="nav-link" href="{{ path('front_blog_index') }}">Blog</a></li>
+    {# Render Galleries link. #}
+    <li class="nav-item"><a class="nav-link" href="{{ path('front_gallery_index') }}">Galeries</a></li>
+</ul>
+
+{# Open right action area. #}
+<div class="d-flex align-items-center gap-2">
+    {# Show the front-office theme toggle button. #}
+    <button id="themeToggleButton" class="btn btn-outline-primary btn-sm theme-toggle" type="button" aria-label="Changer le theme" aria-pressed="false">
+        {# Show icon and label container for theme state. #}
+        <span id="themeToggleLabel">Theme</span>
+    </button>
+    {# Check if user is authenticated. #}
+    {% if app.user %}
+        {# Show logout button. #}
+        <a class="btn btn-primary btn-sm" href="{{ path('app_logout') }}">Deconnexion</a>
+    {# Handle anonymous users. #}
+    {% else %}
+        {# Show login button. #}
+        <a class="btn btn-primary btn-sm" href="{{ path('app_login') }}">Connexion</a>
+    {% endif %}
+</div>

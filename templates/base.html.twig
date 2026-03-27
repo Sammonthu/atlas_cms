@@ -1,0 +1,70 @@
+{# Declare the HTML5 doctype. #}
+<!DOCTYPE html>
+{# Open the root HTML tag with French locale. #}
+<html lang="fr">
+{# Open the document head. #}
+<head>
+    {# Define UTF-8 encoding. #}
+    <meta charset="UTF-8">
+    {# Enable responsive rendering. #}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {# Define the robots behavior. #}
+    <meta name="robots" content="{{ robots|default('index,follow') }}">
+    {# Define the SEO meta description. #}
+    <meta name="description" content="{{ metaDescription|default('Atlas CMS - Site dynamique Symfony avec blog, pages et galeries.') }}">
+    {# Define browser theme color. #}
+    <meta name="theme-color" content="#111111">
+    {# Initialize theme before CSS paint to avoid flash between themes. #}
+    <script>
+        // Load persisted theme from localStorage when available.
+        const storedTheme = localStorage.getItem('atlas-theme');
+        // Resolve initial theme from storage or system preference.
+        const initialTheme = storedTheme ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        // Apply the resolved theme on the root element.
+        document.documentElement.setAttribute('data-theme', initialTheme);
+    </script>
+    {# Define canonical URL for SEO. #}
+    <link rel="canonical" href="{{ canonicalUrl|default(app.request ? app.request.uri : '') }}">
+    {# Define dynamic page title. #}
+    <title>{% block title %}Atlas CMS{% endblock %}</title>
+    {# Define Open Graph title. #}
+    <meta property="og:title" content="{% block og_title %}{% block title_og_fallback %}Atlas CMS{% endblock %}{% endblock %}">
+    {# Define Open Graph description. #}
+    <meta property="og:description" content="{{ metaDescription|default('Atlas CMS - Site dynamique Symfony avec blog, pages et galeries.') }}">
+    {# Define Open Graph type. #}
+    <meta property="og:type" content="website">
+    {# Define Open Graph URL. #}
+    <meta property="og:url" content="{{ canonicalUrl|default(app.request ? app.request.uri : '') }}">
+    {# Define Twitter card mode. #}
+    <meta name="twitter:card" content="summary_large_image">
+    {# Load Bootstrap CSS from CDN. #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    {# Load Bootstrap Icons from CDN. #}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    {# Expose page level stylesheet block. #}
+    {% block stylesheets %}{% endblock %}
+</head>
+{# Open the global body shell. #}
+<body class="front-body d-flex flex-column min-vh-100">
+    {# Include the sticky global header. #}
+    {% include 'front/_partials/header.html.twig' %}
+
+    {# Open the main content container. #}
+    <main class="flex-grow-1" id="top">
+        {# Include global flash messages. #}
+        {% include 'front/_partials/flash_messages.html.twig' %}
+        {# Render page specific content. #}
+        {% block body %}{% endblock %}
+    </main>
+
+    {# Include global footer. #}
+    {% include 'front/_partials/footer.html.twig' %}
+
+    {# Load Bootstrap JS bundle. #}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {# Load local assets through ImportMap. #}
+    {{ importmap('app') }}
+    {# Expose page level scripts block. #}
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,96 @@
+# Configure Monolog pour les logs applicatifs.
+monolog:
+    # Declare les canaux de logs personnalises.
+    channels:
+        - deprecation
+        - cms_front
+        - cms_admin
+
+# Configure Monolog pour l'environnement de developpement.
+when@dev:
+    monolog:
+        handlers:
+            # Ecrit les logs applicatifs standards en fichier.
+            main:
+                type: stream
+                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                level: debug
+                channels: ["!event"]
+            # Ecrit les logs front dans un fichier dedie.
+            cms_front:
+                type: stream
+                path: "%kernel.logs_dir%/cms_front.log"
+                level: info
+                channels: ["cms_front"]
+            # Ecrit les logs admin dans un fichier dedie.
+            cms_admin:
+                type: stream
+                path: "%kernel.logs_dir%/cms_admin.log"
+                level: info
+                channels: ["cms_admin"]
+            # Active les logs console sans bruit doctrine/event.
+            console:
+                type: console
+                process_psr_3_messages: false
+                channels: ["!event", "!doctrine", "!console"]
+
+# Configure Monolog pour l'environnement de test.
+when@test:
+    monolog:
+        handlers:
+            # Bufferise les erreurs pour reduire le bruit en test.
+            main:
+                type: fingers_crossed
+                action_level: error
+                handler: nested
+                excluded_http_codes: [404, 405]
+                channels: ["!event"]
+            # Ecrit les logs tests sur disque.
+            nested:
+                type: stream
+                path: "%kernel.logs_dir%/%kernel.environment%.log"
+                level: debug
+
+# Configure Monolog pour l'environnement de production.
+when@prod:
+    monolog:
+        handlers:
+            # Active la strategie fingers_crossed pour capturer les erreurs pertinentes.
+            main:
+                type: fingers_crossed
+                action_level: error
+                handler: nested
+                excluded_http_codes: [404, 405]
+                channels: ["!deprecation"]
+                buffer_size: 50
+            # Ecrit les logs applicatifs en JSON vers stderr.
+            nested:
+                type: stream
+                path: php://stderr
+                level: debug
+                formatter: monolog.formatter.json
+            # Ecrit les logs front en JSON vers stderr.
+            cms_front:
+                type: stream
+                path: php://stderr
+                level: info
+                formatter: monolog.formatter.json
+                channels: ["cms_front"]
+            # Ecrit les logs admin en JSON vers stderr.
+            cms_admin:
+                type: stream
+                path: php://stderr
+                level: info
+                formatter: monolog.formatter.json
+                channels: ["cms_admin"]
+            # Active les logs console sans bruit event/doctrine.
+            console:
+                type: console
+                process_psr_3_messages: false
+                channels: ["!event", "!doctrine"]
+            # Ecrit les deprecations sur un flux dedie.
+            deprecation:
+                type: stream
+                channels: [deprecation]
+                path: php://stderr
+                formatter: monolog.formatter.json

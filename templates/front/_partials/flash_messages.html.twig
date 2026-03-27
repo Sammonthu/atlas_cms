@@ -1,0 +1,34 @@
+{# Definis les styles Bootstrap par type de flash. #}
+{% set flashStyles = {
+    success: 'success',
+    error: 'danger',
+    warning: 'warning',
+    info: 'info'
+} %}
+
+{# Definis les icones Bootstrap par type de flash. #}
+{% set flashIcons = {
+    success: 'check-circle-fill',
+    error: 'x-octagon-fill',
+    warning: 'exclamation-triangle-fill',
+    info: 'info-circle-fill'
+} %}
+
+{# Parcourt chaque type de flash harmonise. #}
+{% for type, bootstrapType in flashStyles %}
+    {# Parcourt tous les messages du type courant. #}
+    {% for message in app.flashes(type) %}
+        {# Ouvre le conteneur du message flash. #}
+        <div class="container mt-3">
+            {# Ouvre l'alerte stylisee et fermable. #}
+            <div class="alert alert-{{ bootstrapType }} alert-dismissible fade show shadow-sm mb-0 d-flex align-items-start gap-2" role="alert">
+                {# Affiche l'icone associee au type de message. #}
+                <i class="bi bi-{{ flashIcons[type] }} mt-1" aria-hidden="true"></i>
+                {# Affiche le contenu textuel du message. #}
+                <div>{{ message }}</div>
+                {# Affiche le bouton de fermeture standard. #}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        </div>
+    {% endfor %}
+{% endfor %}

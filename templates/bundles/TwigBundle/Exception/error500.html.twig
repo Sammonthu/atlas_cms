@@ -1,0 +1,35 @@
+{# Herite du layout principal pour conserver le design global. #}
+{% extends 'base.html.twig' %}
+{# Definit le titre de la page 500. #}
+{% block title %}Erreur serveur (500) - Atlas CMS{% endblock %}
+{# Definit le contenu principal de l'erreur 500. #}
+{% block body %}
+    {# Ouvre la section d'erreur. #}
+    <section class="py-5">
+        {# Ouvre le conteneur Bootstrap. #}
+        <div class="container">
+            {# Ouvre la ligne centree. #}
+            <div class="row justify-content-center">
+                {# Ouvre la colonne responsive. #}
+                <div class="col-12 col-lg-8">
+                    {# Ouvre la carte d'erreur. #}
+                    <div class="error-card shadow-sm border-0 p-4 p-md-5 text-center">
+                        {# Affiche le code erreur 500. #}
+                        <p class="display-5 fw-bold text-primary mb-2">500</p>
+                        {# Affiche le titre explicatif. #}
+                        <h1 class="h3 mb-3">Erreur interne</h1>
+                        {# Affiche la description utilisateur. #}
+                        <p class="text-muted mb-4">Une erreur inattendue est survenue. Merci de reessayer dans quelques instants.</p>
+                        {# Ouvre le groupe d'actions. #}
+                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+                            {# Affiche le bouton retour accueil. #}
+                            <a href="{{ path('home') }}" class="btn btn-primary">Retour a l'accueil</a>
+                            {# Affiche le bouton blog. #}
+                            <a href="{{ path('front_blog_index') }}" class="btn btn-outline-primary">Voir le blog</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

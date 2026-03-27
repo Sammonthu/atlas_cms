@@ -1,0 +1,695 @@
+/* Declare the premium design tokens inspired by Apple-like interfaces. */
+:root {
+    /* Define primary text color for light mode. */
+    --ui-ink: #111111;
+    /* Define secondary text color for light mode. */
+    --ui-muted: #6e6e73;
+    /* Define subtle border color for light mode. */
+    --ui-line: rgba(17, 17, 17, 0.08);
+    /* Define page background for light mode. */
+    --ui-bg: #f5f5f7;
+    /* Define card surface for light mode. */
+    --ui-surface: #ffffff;
+    /* Define accent color. */
+    --ui-accent: #0071e3;
+    /* Define stronger accent color for hover. */
+    --ui-accent-strong: #005bb5;
+    /* Define translucent glass surface. */
+    --ui-glass: rgba(255, 255, 255, 0.72);
+    /* Define global radius. */
+    --ui-radius: 18px;
+    /* Define soft shadow level 1. */
+    --ui-shadow-1: 0 6px 24px rgba(15, 23, 42, 0.06);
+    /* Define soft shadow level 2. */
+    --ui-shadow-2: 0 16px 42px rgba(15, 23, 42, 0.12);
+}
+
+/* Override tokens when dark theme is active. */
+:root[data-theme='dark'] {
+    /* Define primary text color for dark mode. */
+    --ui-ink: #e8eaf0;
+    /* Define secondary text color for dark mode. */
+    --ui-muted: #b2b8c5;
+    /* Define subtle border color for dark mode. */
+    --ui-line: rgba(232, 234, 240, 0.16);
+    /* Define page background for dark mode. */
+    --ui-bg: #171a20;
+    /* Define card surface for dark mode. */
+    --ui-surface: #21262f;
+    /* Keep bright accent in dark mode. */
+    --ui-accent: #4ea1ff;
+    /* Define hover accent in dark mode. */
+    --ui-accent-strong: #2f86e8;
+    /* Define glass color in dark mode. */
+    --ui-glass: rgba(31, 36, 45, 0.74);
+    /* Define shadow level 1 in dark mode. */
+    --ui-shadow-1: 0 8px 28px rgba(0, 0, 0, 0.28);
+    /* Define shadow level 2 in dark mode. */
+    --ui-shadow-2: 0 18px 48px rgba(0, 0, 0, 0.38);
+}
+
+/* Enable smooth anchor scrolling. */
+html {
+    /* Apply smooth scroll behavior. */
+    scroll-behavior: smooth;
+}
+
+/* Define global body rendering. */
+body {
+    /* Apply premium system typography stack. */
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    /* Apply light atmospheric background. */
+    background: radial-gradient(circle at 15% -10%, rgba(0, 113, 227, 0.06), transparent 35%), radial-gradient(circle at 100% 0%, rgba(0, 113, 227, 0.04), transparent 30%), var(--ui-bg);
+    /* Apply text color token. */
+    color: var(--ui-ink);
+    /* Improve font rendering on WebKit. */
+    -webkit-font-smoothing: antialiased;
+    /* Improve text rendering quality. */
+    text-rendering: optimizeLegibility;
+    /* Animate theme transitions smoothly. */
+    transition: background-color 0.28s ease, color 0.28s ease;
+}
+
+/* Apply dark atmospheric background in dark mode. */
+:root[data-theme='dark'] body {
+    /* Apply subtle dark gradients. */
+    background: radial-gradient(circle at 12% -10%, rgba(78, 161, 255, 0.12), transparent 34%), radial-gradient(circle at 100% 0%, rgba(78, 161, 255, 0.08), transparent 28%), var(--ui-bg);
+}
+
+/* Keep app shell fluid. */
+.front-body {
+    /* Apply soft first paint animation. */
+    animation: ui-fade-in 0.45s ease-out;
+}
+
+/* Define first paint animation. */
+@keyframes ui-fade-in {
+    /* Define start state. */
+    from {
+        /* Start transparent. */
+        opacity: 0;
+        /* Start slightly translated. */
+        transform: translateY(8px);
+    }
+    /* Define end state. */
+    to {
+        /* End visible. */
+        opacity: 1;
+        /* End at natural position. */
+        transform: translateY(0);
+    }
+}
+
+/* Keep reveal content visible by default for no-JS fallback. */
+.reveal {
+    /* Keep element visible. */
+    opacity: 1;
+    /* Keep natural position. */
+    transform: translateY(0);
+    /* Animate reveal transitions. */
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Activate hidden pre-state only with JS. */
+.has-js .reveal {
+    /* Hide element before reveal. */
+    opacity: 0;
+    /* Offset element before reveal. */
+    transform: translateY(16px);
+}
+
+/* Define visible reveal state. */
+.has-js .reveal.is-visible {
+    /* Show element when intersecting. */
+    opacity: 1;
+    /* Reset element offset. */
+    transform: translateY(0);
+}
+
+/* Style sticky front header. */
+.front-header {
+    /* Apply glass background. */
+    background: var(--ui-glass);
+    /* Apply blur effect. */
+    backdrop-filter: saturate(180%) blur(20px);
+    /* Apply subtle border. */
+    border-bottom: 1px solid var(--ui-line);
+    /* Animate header state changes. */
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Style scrolled header state. */
+.front-header.is-scrolled {
+    /* Increase header opacity on scroll. */
+    background: rgba(255, 255, 255, 0.86);
+    /* Add soft shadow on scroll. */
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* Adapt scrolled header in dark mode. */
+:root[data-theme='dark'] .front-header.is-scrolled {
+    /* Keep dark glass in scrolled mode. */
+    background: rgba(30, 35, 43, 0.9);
+}
+
+/* Style brand label. */
+.front-brand {
+    /* Increase brand weight. */
+    font-weight: 640;
+    /* Increase brand size. */
+    font-size: 1.22rem;
+    /* Slightly tighten letter spacing. */
+    letter-spacing: 0.01em;
+    /* Use theme text color. */
+    color: var(--ui-ink) !important;
+}
+
+/* Style standard chip component. */
+.ui-chip {
+    /* Use inline-flex for vertical alignment. */
+    display: inline-flex;
+    /* Center chip content. */
+    align-items: center;
+    /* Apply chip gap. */
+    gap: 0.45rem;
+    /* Apply chip padding. */
+    padding: 0.42rem 0.85rem;
+    /* Apply pill radius. */
+    border-radius: 999px;
+    /* Apply subtle border. */
+    border: 1px solid var(--ui-line);
+    /* Apply translucent light background. */
+    background: rgba(255, 255, 255, 0.72);
+    /* Set compact font size. */
+    font-size: 0.82rem;
+    /* Use medium font weight. */
+    font-weight: 560;
+    /* Use muted text token. */
+    color: var(--ui-muted);
+}
+
+/* Adapt chip in dark mode. */
+:root[data-theme='dark'] .ui-chip {
+    /* Use dark translucent background. */
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Style nav links. */
+.nav-link {
+    /* Use neutral link color. */
+    color: #3a3a3c;
+    /* Set medium link weight. */
+    font-weight: 510;
+    /* Add horizontal spacing. */
+    padding-left: 0.9rem !important;
+    /* Add horizontal spacing. */
+    padding-right: 0.9rem !important;
+    /* Apply rounded hover halo. */
+    border-radius: 999px;
+    /* Animate link states. */
+    transition: color 0.22s ease, background-color 0.22s ease;
+}
+
+/* Adapt nav links in dark mode. */
+:root[data-theme='dark'] .nav-link {
+    /* Use brighter nav text in dark mode. */
+    color: #d8ddea;
+}
+
+/* Style nav hover and active state. */
+.nav-link:hover,
+.nav-link.active {
+    /* Use accent text color on interaction. */
+    color: var(--ui-accent);
+    /* Use subtle accent halo. */
+    background: rgba(0, 113, 227, 0.08);
+}
+
+/* Adapt nav interaction halo in dark mode. */
+:root[data-theme='dark'] .nav-link:hover,
+:root[data-theme='dark'] .nav-link.active {
+    /* Use brighter halo for dark surface. */
+    background: rgba(78, 161, 255, 0.16);
+}
+
+/* Define explicit theme toggle button style. */
+.theme-toggle {
+    /* Keep stable width when label changes. */
+    min-width: 122px;
+    /* Center text in button. */
+    text-align: center;
+}
+
+/* Define section spacing rhythm. */
+.ui-section {
+    /* Apply top section spacing. */
+    padding-top: 4.8rem;
+    /* Apply bottom section spacing. */
+    padding-bottom: 4.8rem;
+}
+
+/* Define soft section background. */
+.ui-section-soft {
+    /* Apply subtle white contrast panel. */
+    background: rgba(255, 255, 255, 0.55);
+}
+
+/* Adapt soft section in dark mode. */
+:root[data-theme='dark'] .ui-section-soft {
+    /* Apply subtle dark contrast panel. */
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Style section headings. */
+.ui-heading {
+    /* Use semibold title weight. */
+    font-weight: 640;
+    /* Tighten heading spacing. */
+    letter-spacing: -0.02em;
+}
+
+/* Style section intro text. */
+.ui-intro {
+    /* Use muted intro color. */
+    color: var(--ui-muted);
+    /* Improve readability. */
+    line-height: 1.72;
+    /* Limit line width. */
+    max-width: 64ch;
+}
+
+/* Style hero section spacing. */
+.front-hero {
+    /* Apply top hero spacing. */
+    padding-top: 5.8rem;
+    /* Apply bottom hero spacing. */
+    padding-bottom: 5.8rem;
+}
+
+/* Style hero title. */
+.front-hero__title {
+    /* Use fluid responsive font size. */
+    font-size: clamp(2.2rem, 5vw, 4.1rem);
+    /* Use strong heading weight. */
+    font-weight: 650;
+    /* Tighten heading tracking. */
+    letter-spacing: -0.03em;
+    /* Keep compact heading line-height. */
+    line-height: 1.06;
+}
+
+/* Style hero subtitle. */
+.front-hero__subtitle {
+    /* Use muted subtitle color. */
+    color: var(--ui-muted);
+    /* Use larger supporting size. */
+    font-size: 1.13rem;
+    /* Improve subtitle readability. */
+    line-height: 1.8;
+    /* Limit subtitle width. */
+    max-width: 58ch;
+}
+
+/* Style hero stats panel. */
+.front-hero-card {
+    /* Use translucent white panel. */
+    background: rgba(255, 255, 255, 0.78);
+    /* Apply subtle border. */
+    border: 1px solid var(--ui-line);
+    /* Apply premium radius. */
+    border-radius: 22px;
+    /* Apply panel padding. */
+    padding: 1.5rem;
+    /* Apply panel blur. */
+    backdrop-filter: blur(12px);
+    /* Apply soft panel shadow. */
+    box-shadow: var(--ui-shadow-1);
+}
+
+/* Adapt hero stats panel in dark mode. */
+:root[data-theme='dark'] .front-hero-card {
+    /* Use dark translucent panel. */
+    background: rgba(30, 36, 45, 0.78);
+}
+
+/* Style hero stat row. */
+.front-hero-card__item {
+    /* Align label and value in row. */
+    display: flex;
+    /* Separate label and value. */
+    justify-content: space-between;
+    /* Align text baselines. */
+    align-items: baseline;
+    /* Add row spacing. */
+    padding-bottom: 0.85rem;
+    /* Add row divider. */
+    border-bottom: 1px solid rgba(17, 17, 17, 0.06);
+}
+
+/* Remove divider from last stat row. */
+.front-hero-card__item:last-child {
+    /* Remove divider from last row. */
+    border-bottom: 0;
+    /* Remove extra row spacing. */
+    padding-bottom: 0;
+}
+
+/* Style hero stat label. */
+.front-hero-card__label {
+    /* Remove default margin. */
+    margin: 0;
+    /* Apply muted color. */
+    color: var(--ui-muted);
+    /* Apply compact size. */
+    font-size: 0.92rem;
+}
+
+/* Style hero stat value. */
+.front-hero-card__value {
+    /* Remove default margin. */
+    margin: 0;
+    /* Apply main text color. */
+    color: var(--ui-ink);
+    /* Apply value size. */
+    font-size: 1.32rem;
+    /* Apply semibold value weight. */
+    font-weight: 630;
+}
+
+/* Style cards. */
+.front-card {
+    /* Apply surface color. */
+    background: var(--ui-surface);
+    /* Apply subtle border. */
+    border: 1px solid var(--ui-line);
+    /* Apply global radius. */
+    border-radius: var(--ui-radius);
+    /* Apply base shadow. */
+    box-shadow: var(--ui-shadow-1);
+    /* Animate card transitions. */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Style card hover effect. */
+.front-card:hover {
+    /* Lift card on hover. */
+    transform: translateY(-4px);
+    /* Increase shadow on hover. */
+    box-shadow: var(--ui-shadow-2);
+    /* Highlight border on hover. */
+    border-color: rgba(0, 113, 227, 0.25);
+}
+
+/* Style card titles. */
+.front-card-title {
+    /* Apply semibold weight. */
+    font-weight: 620;
+    /* Slightly tighten tracking. */
+    letter-spacing: -0.01em;
+}
+
+/* Style card text blocks. */
+.front-card-text {
+    /* Apply muted color. */
+    color: var(--ui-muted);
+    /* Improve readability. */
+    line-height: 1.72;
+}
+
+/* Style side panels. */
+.front-panel {
+    /* Apply translucent panel surface. */
+    background: rgba(255, 255, 255, 0.74);
+    /* Apply blur effect. */
+    backdrop-filter: blur(10px);
+    /* Apply subtle border. */
+    border: 1px solid var(--ui-line);
+    /* Apply radius. */
+    border-radius: var(--ui-radius);
+    /* Apply panel shadow. */
+    box-shadow: var(--ui-shadow-1);
+}
+
+/* Adapt side panels in dark mode. */
+:root[data-theme='dark'] .front-panel {
+    /* Use dark translucent panel. */
+    background: rgba(28, 34, 43, 0.8);
+}
+
+/* Style primary buttons. */
+.btn-primary {
+    /* Apply accent gradient. */
+    background: linear-gradient(180deg, #1a83f0 0%, var(--ui-accent) 100%);
+    /* Remove default border. */
+    border: 0;
+    /* Apply pill radius. */
+    border-radius: 999px;
+    /* Apply medium weight. */
+    font-weight: 560;
+    /* Animate button transitions. */
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+    /* Apply glow shadow. */
+    box-shadow: 0 8px 20px rgba(0, 113, 227, 0.28);
+}
+
+/* Style primary button hover. */
+.btn-primary:hover {
+    /* Apply stronger gradient. */
+    background: linear-gradient(180deg, #1679df 0%, var(--ui-accent-strong) 100%);
+    /* Lift button slightly. */
+    transform: translateY(-1px);
+    /* Increase glow shadow. */
+    box-shadow: 0 12px 24px rgba(0, 113, 227, 0.32);
+}
+
+/* Style outline buttons. */
+.btn-outline-primary {
+    /* Apply accent text color. */
+    color: var(--ui-accent);
+    /* Apply subtle accent border. */
+    border-color: rgba(0, 113, 227, 0.38);
+    /* Apply pill radius. */
+    border-radius: 999px;
+    /* Apply medium weight. */
+    font-weight: 560;
+    /* Animate outline transitions. */
+    transition: color 0.22s ease, background-color 0.22s ease, border-color 0.22s ease;
+}
+
+/* Style outline button hover. */
+.btn-outline-primary:hover {
+    /* Switch to white text on hover. */
+    color: #ffffff;
+    /* Fill with accent color. */
+    background-color: var(--ui-accent);
+    /* Sync border with fill color. */
+    border-color: var(--ui-accent);
+}
+
+/* Style badges. */
+.badge {
+    /* Apply rounded pill style. */
+    border-radius: 999px;
+    /* Apply compact padding. */
+    padding: 0.45em 0.75em;
+}
+
+/* Style rich text paragraphs and list items. */
+.content-rich p,
+.content-rich li {
+    /* Apply readable line-height. */
+    line-height: 1.8;
+    /* Apply balanced text color. */
+    color: #2b2b30;
+}
+
+/* Adapt rich text in dark mode. */
+:root[data-theme='dark'] .content-rich p,
+:root[data-theme='dark'] .content-rich li {
+    /* Apply lighter text color. */
+    color: #dde2ee;
+}
+
+/* Add spacing between rich paragraphs. */
+.content-rich p + p {
+    /* Apply vertical rhythm. */
+    margin-top: 1rem;
+}
+
+/* Style form controls. */
+.form-control,
+.form-select,
+textarea.form-control {
+    /* Apply subtle border. */
+    border: 1px solid rgba(17, 17, 17, 0.15);
+    /* Apply rounded corners. */
+    border-radius: 14px;
+    /* Apply light background. */
+    background-color: rgba(255, 255, 255, 0.86);
+    /* Animate form transitions. */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+/* Adapt form controls in dark mode. */
+:root[data-theme='dark'] .form-control,
+:root[data-theme='dark'] .form-select,
+:root[data-theme='dark'] textarea.form-control {
+    /* Apply dark translucent field background. */
+    background-color: rgba(255, 255, 255, 0.05);
+    /* Apply light field text. */
+    color: #eef2fa;
+    /* Apply light border in dark mode. */
+    border-color: rgba(232, 234, 240, 0.24);
+}
+
+/* Style focused form controls. */
+.form-control:focus,
+.form-select:focus,
+textarea.form-control:focus {
+    /* Apply accent border on focus. */
+    border-color: rgba(0, 113, 227, 0.55);
+    /* Apply accent focus ring. */
+    box-shadow: 0 0 0 0.22rem rgba(0, 113, 227, 0.17);
+    /* Apply bright focus background. */
+    background-color: #ffffff;
+}
+
+/* Adapt focused controls in dark mode. */
+:root[data-theme='dark'] .form-control:focus,
+:root[data-theme='dark'] .form-select:focus,
+:root[data-theme='dark'] textarea.form-control:focus {
+    /* Keep dark field background on focus. */
+    background-color: rgba(255, 255, 255, 0.08);
+    /* Keep text readable on focus. */
+    color: #ffffff;
+}
+
+/* Style login shell background. */
+.auth-shell {
+    /* Apply premium gradient atmosphere. */
+    background: radial-gradient(circle at 20% -10%, rgba(0, 113, 227, 0.12), transparent 35%), radial-gradient(circle at 100% 20%, rgba(0, 113, 227, 0.08), transparent 33%), var(--ui-bg);
+}
+
+/* Style login card. */
+.auth-card {
+    /* Apply translucent surface. */
+    background: rgba(255, 255, 255, 0.84);
+    /* Apply blur effect. */
+    backdrop-filter: blur(14px);
+    /* Apply subtle border. */
+    border: 1px solid var(--ui-line);
+    /* Apply strong radius. */
+    border-radius: 24px;
+    /* Apply soft elevated shadow. */
+    box-shadow: 0 24px 56px rgba(15, 23, 42, 0.14);
+}
+
+/* Adapt login card in dark mode. */
+:root[data-theme='dark'] .auth-card {
+    /* Apply dark translucent login surface. */
+    background: rgba(26, 31, 39, 0.86);
+}
+
+/* Style auth brand badge. */
+.auth-badge {
+    /* Display badge as inline-flex. */
+    display: inline-flex;
+    /* Center badge content. */
+    align-items: center;
+    /* Apply badge padding. */
+    padding: 0.4rem 0.9rem;
+    /* Apply pill radius. */
+    border-radius: 999px;
+    /* Apply subtle border. */
+    border: 1px solid rgba(0, 113, 227, 0.2);
+    /* Apply light accent background. */
+    background: rgba(0, 113, 227, 0.08);
+    /* Apply accent text color. */
+    color: var(--ui-accent);
+    /* Apply medium weight. */
+    font-weight: 600;
+}
+
+/* Style alerts. */
+.alert {
+    /* Apply modern rounded corners. */
+    border-radius: 14px;
+    /* Keep subtle border thickness. */
+    border-width: 1px;
+}
+
+/* Style footer. */
+.front-footer {
+    /* Apply translucent light footer background. */
+    background: rgba(255, 255, 255, 0.84);
+    /* Apply top border. */
+    border-top: 1px solid var(--ui-line);
+}
+
+/* Adapt footer in dark mode. */
+:root[data-theme='dark'] .front-footer {
+    /* Apply dark translucent footer background. */
+    background: rgba(27, 32, 40, 0.86);
+}
+
+/* Style footer links. */
+.front-footer a {
+    /* Apply muted link color. */
+    color: var(--ui-muted);
+    /* Animate link transitions. */
+    transition: color 0.2s ease;
+}
+
+/* Style footer link hover. */
+.front-footer a:hover {
+    /* Apply accent on hover. */
+    color: var(--ui-accent);
+}
+
+/* Normalize muted utility in dark mode. */
+:root[data-theme='dark'] .text-muted {
+    /* Ensure muted text is still readable. */
+    color: var(--ui-muted) !important;
+}
+
+/* Keep minimum height utility for auth pages. */
+.min-vh-75 {
+    /* Enforce minimum viewport height. */
+    min-height: 75vh;
+}
+
+/* Adjust layout on medium screens. */
+@media (max-width: 991.98px) {
+    /* Reduce section spacing. */
+    .ui-section {
+        /* Reduce top spacing. */
+        padding-top: 4rem;
+        /* Reduce bottom spacing. */
+        padding-bottom: 4rem;
+    }
+
+    /* Reduce hero spacing. */
+    .front-hero {
+        /* Reduce top spacing. */
+        padding-top: 4.7rem;
+        /* Reduce bottom spacing. */
+        padding-bottom: 4.7rem;
+    }
+}
+
+/* Adjust layout on small screens. */
+@media (max-width: 575.98px) {
+    /* Reduce nav link horizontal spacing. */
+    .nav-link {
+        /* Reduce left spacing. */
+        padding-left: 0.55rem !important;
+        /* Reduce right spacing. */
+        padding-right: 0.55rem !important;
+    }
+
+    /* Reduce hero title size for small devices. */
+    .front-hero__title {
+        /* Apply smaller fluid clamp on mobile. */
+        font-size: clamp(2rem, 10vw, 2.7rem);
+    }
+}

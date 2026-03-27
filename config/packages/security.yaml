@@ -1,0 +1,86 @@
+# Configure la securite globale de l'application.
+security:
+    # Definit une hierarchie des roles pour simplifier la gestion des permissions.
+    role_hierarchy:
+        # Donne a l'administrateur toutes les permissions editeur et utilisateur.
+        ROLE_ADMIN: [ROLE_EDITOR, ROLE_USER]
+        # Donne a l'editeur les permissions utilisateur de base.
+        ROLE_EDITOR: [ROLE_USER]
+
+    # Configure l'algorithme de hash des mots de passe.
+    password_hashers:
+        # Cible toute classe implementant l'interface de mot de passe Symfony.
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    # Configure la source de chargement des utilisateurs.
+    providers:
+        # Declare un provider Doctrine base sur l'entite User.
+        app_user_provider:
+            # Utilise le provider d'entite Doctrine.
+            entity:
+                # Reference la classe utilisateur.
+                class: App\Entity\User
+                # Utilise l'email comme identifiant unique.
+                property: email
+
+    # Configure les firewalls de securite.
+    firewalls:
+        # Declare le firewall des ressources techniques Symfony.
+        dev:
+            # Cible profiler, wdt et assets statiques.
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            # Desactive la securite sur ces ressources.
+            security: false
+
+        # Declare le firewall principal de l'application.
+        main:
+            # Active le mode lazy pour optimiser les performances.
+            lazy: true
+            # Branche le provider Doctrine utilisateur.
+            provider: app_user_provider
+            # Definit l'authenticator formulaire moderne.
+            custom_authenticator: App\Security\LoginFormAuthenticator
+            # Definit le point d'entree de connexion.
+            entry_point: App\Security\LoginFormAuthenticator
+            # Active la protection anti brute-force sur le login.
+            login_throttling:
+                # Limite a 5 tentatives par minute.
+                max_attempts: 5
+            # Configure la deconnexion.
+            logout:
+                # Definit la route Symfony de logout.
+                path: app_logout
+                # Definit la redirection apres deconnexion.
+                target: home
+
+    # Configure les regles d'acces par URL.
+    access_control:
+        # Autorise explicitement la page de connexion a tout le monde.
+        - { path: ^/login$, roles: PUBLIC_ACCESS }
+        # Autorise l'endpoint health API pour supervision.
+        - { path: ^/api/health$, roles: PUBLIC_ACCESS }
+        # Reserve les futurs endpoints API a l'administration.
+        - { path: ^/api, roles: ROLE_ADMIN }
+        # Reserve la gestion des utilisateurs admin aux administrateurs.
+        - { path: ^/admin/user, roles: ROLE_ADMIN }
+        # Reserve tout le back-office aux editeurs (et donc admins via hierarchie).
+        - { path: ^/admin, roles: ROLE_EDITOR }
+        # Reserve l'ajout de commentaires aux utilisateurs connectes.
+        - { path: ^/blog/.+/comment$, roles: ROLE_USER }
+
+# Configure des hashers plus rapides en environnement de test.
+when@test:
+    # Redefinit la securite en test.
+    security:
+        # Redefinit les hashers de mots de passe.
+        password_hashers:
+            # Cible toute classe implementant l'interface mot de passe.
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                # Conserve la detection automatique d'algorithme.
+                algorithm: auto
+                # Reduit le cout bcrypt au minimum.
+                cost: 4
+                # Reduit le time cost argon au minimum.
+                time_cost: 3
+                # Reduit la memoire argon au minimum.
+                memory_cost: 10

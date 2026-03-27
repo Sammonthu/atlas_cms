@@ -1,0 +1,35 @@
+{# Extend the global front layout. #}
+{% extends 'base.html.twig' %}
+{# Define SEO title for galleries listing. #}
+{% block title %}Galeries - Atlas CMS{% endblock %}
+{# Define SEO description. #}
+{% set metaDescription = 'Decouvrez les galeries photos du CMS Atlas.' %}
+{# Define main body. #}
+{% block body %}
+    {# Open galleries listing section. #}
+    <section class="ui-section">
+        {# Open centered container. #}
+        <div class="container">
+            {# Open heading block. #}
+            <div class="mb-4 reveal">
+                {# Render chip label. #}
+                <span class="ui-chip mb-2">Galeries</span>
+                {# Render page title. #}
+                <h1 class="ui-heading display-6 mb-2">Galeries photos</h1>
+                {# Render intro text. #}
+                <p class="ui-intro mb-0">Explorez les collections visuelles du projet avec un rendu moderne et immersif.</p>
+            </div>
+            {# Open cards grid. #}
+            <div class="row g-4">
+                {# Loop through galleries. #}
+                {% for gallery in galleries %}
+                    <div class="col-12 col-md-6 col-xl-4 reveal">
+                        {% include 'front/_partials/cards/gallery_card.html.twig' with { gallery: gallery } only %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">Aucune galerie disponible pour l'instant.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
