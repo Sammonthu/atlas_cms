@@ -35,7 +35,7 @@
                         {% endif %}
 
                         {# Open login form. #}
-                        <form method="post" novalidate>
+                        <form method="post" action="{{ path('app_login') }}" novalidate>
                             {# Open email field group. #}
                             <div class="mb-3">
                                 <label for="email" class="form-label">Adresse email</label>

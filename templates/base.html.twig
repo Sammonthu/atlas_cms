@@ -13,7 +13,7 @@
     {# Define the SEO meta description. #}
     <meta name="description" content="{{ metaDescription|default('Atlas CMS - Site dynamique Symfony avec blog, pages et galeries.') }}">
     {# Define browser theme color. #}
-    <meta name="theme-color" content="#111111">
+    <meta name="theme-color" content="#121a27">
     {# Initialize theme before CSS paint to avoid flash between themes. #}
     <script>
         // Load persisted theme from localStorage when available.
@@ -41,24 +41,41 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     {# Load Bootstrap Icons from CDN. #}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    {# Open an early connection to Google Fonts API host. #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    {# Open an early connection to Google Fonts static host with CORS. #}
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {# Load premium typography families used across the whole interface. #}
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     {# Expose page level stylesheet block. #}
     {% block stylesheets %}{% endblock %}
 </head>
+{# Resolve optional flag to hide global page chrome. #}
+{% set hideLayoutChrome = hideLayoutChrome|default(false) %}
 {# Open the global body shell. #}
 <body class="front-body d-flex flex-column min-vh-100">
-    {# Include the sticky global header. #}
-    {% include 'front/_partials/header.html.twig' %}
+    {# Render header only when chrome is enabled. #}
+    {% if not hideLayoutChrome %}
+        {# Include the sticky global header. #}
+        {% include 'front/_partials/header.html.twig' %}
+    {% endif %}
 
     {# Open the main content container. #}
     <main class="flex-grow-1" id="top">
-        {# Include global flash messages. #}
-        {% include 'front/_partials/flash_messages.html.twig' %}
+        {# Render flash messages only when chrome is enabled. #}
+        {% if not hideLayoutChrome %}
+            {# Include global flash messages. #}
+            {% include 'front/_partials/flash_messages.html.twig' %}
+        {% endif %}
         {# Render page specific content. #}
         {% block body %}{% endblock %}
     </main>
 
-    {# Include global footer. #}
-    {% include 'front/_partials/footer.html.twig' %}
+    {# Render footer only when chrome is enabled. #}
+    {% if not hideLayoutChrome %}
+        {# Include global footer. #}
+        {% include 'front/_partials/footer.html.twig' %}
+    {% endif %}
 
     {# Load Bootstrap JS bundle. #}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

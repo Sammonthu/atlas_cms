@@ -8,6 +8,10 @@
         {% endif %}
         {# Show page title. #}
         <h3 class="front-card-title h5 mb-2">{{ page.title }}</h3>
+        {# Show parent information when available. #}
+        {% if page.parent %}
+            <p class="small text-muted mb-2">Sous-page de {{ page.parent.title }}</p>
+        {% endif %}
         {# Show page teaser text. #}
         <p class="front-card-text small mb-3">{{ page.metaDescription ?: 'Page institutionnelle publiee.' }}</p>
         {# Show detail link. #}

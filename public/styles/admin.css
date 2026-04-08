@@ -1,165 +1,387 @@
-/* Définit des variables visuelles dédiées au back-office. */
+/* Load premium web fonts for admin typography. */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+/* Define a shared admin mini design system. */
 :root {
-    /* Définit la couleur de fond principale admin. */
-    --admin-surface: #f4f7fb;
-    /* Définit la couleur primaire admin. */
-    --admin-primary: #0f4c81;
-    /* Définit la couleur texte forte admin. */
-    --admin-text-strong: #1f2a37;
+    /* Define admin body typography stack. */
+    --admin-font-body: 'Plus Jakarta Sans', 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    /* Define admin heading typography stack. */
+    --admin-font-heading: 'Manrope', 'Plus Jakarta Sans', 'Inter', 'Segoe UI', sans-serif;
+    /* Define light admin background tone. */
+    --admin-bg: #ecf3fb;
+    /* Define elevated light admin background tone. */
+    --admin-bg-elevated: #f5f9ff;
+    /* Define light admin surface tone. */
+    --admin-surface: #ffffff;
+    /* Define light admin soft surface tone. */
+    --admin-surface-soft: #f7faff;
+    /* Define shared admin border color. */
+    --admin-line: rgba(26, 43, 71, 0.14);
+    /* Define primary admin text color. */
+    --admin-text: #14243c;
+    /* Define secondary admin text color. */
+    --admin-text-muted: #5d6e87;
+    /* Define admin accent color. */
+    --admin-primary: #2c7be5;
+    /* Define admin accent hover color. */
+    --admin-primary-strong: #1e63be;
+    /* Define admin accent soft veil. */
+    --admin-primary-soft: rgba(44, 123, 229, 0.12);
+    /* Define admin accent edge color. */
+    --admin-primary-edge: rgba(44, 123, 229, 0.34);
+    /* Define subtle admin shadow. */
+    --admin-shadow-1: 0 14px 34px rgba(11, 29, 52, 0.08);
+    /* Define stronger admin shadow. */
+    --admin-shadow-2: 0 24px 56px rgba(11, 29, 52, 0.14);
 }
 
-/* Applique un fond clair premium à la zone de contenu EasyAdmin. */
-.content-wrapper {
-    /* Définit un fond subtil en dégradé léger. */
-    background: linear-gradient(180deg, #f8fbff 0%, var(--admin-surface) 100%);
+/* Override admin tokens in dark mode. */
+[data-bs-theme='dark'] {
+    /* Define dark admin background tone. */
+    --admin-bg: #121a27;
+    /* Define elevated dark admin background tone. */
+    --admin-bg-elevated: #172336;
+    /* Define dark admin surface tone. */
+    --admin-surface: #1c2a3f;
+    /* Define dark admin soft surface tone. */
+    --admin-surface-soft: #203047;
+    /* Define dark admin border color. */
+    --admin-line: rgba(145, 170, 209, 0.28);
+    /* Define dark admin primary text color. */
+    --admin-text: #ecf2ff;
+    /* Define dark admin secondary text color. */
+    --admin-text-muted: #a7b7cf;
+    /* Define dark admin accent color. */
+    --admin-primary: #6eb6ff;
+    /* Define dark admin accent hover color. */
+    --admin-primary-strong: #57a3f2;
+    /* Define dark admin accent soft veil. */
+    --admin-primary-soft: rgba(110, 182, 255, 0.2);
+    /* Define dark admin accent edge color. */
+    --admin-primary-edge: rgba(143, 201, 255, 0.42);
+    /* Define subtle dark admin shadow. */
+    --admin-shadow-1: 0 16px 34px rgba(2, 7, 15, 0.32);
+    /* Define strong dark admin shadow. */
+    --admin-shadow-2: 0 26px 58px rgba(2, 7, 15, 0.44);
+    /* Sync Bootstrap body background with admin token. */
+    --bs-body-bg: var(--admin-bg);
+    /* Sync Bootstrap secondary background with admin token. */
+    --bs-secondary-bg: #1a293f;
+    /* Sync Bootstrap tertiary background with admin token. */
+    --bs-tertiary-bg: #20324a;
+    /* Sync Bootstrap border color with admin token. */
+    --bs-border-color: var(--admin-line);
 }
 
-/* Stylise le bandeau d'introduction du dashboard. */
-.admin-hero {
-    /* Ajoute un fond coloré premium. */
-    background: linear-gradient(135deg, #0f4c81 0%, #1f7a8c 100%);
-    /* Ajoute un espacement interne confortable. */
-    padding: 1.5rem;
-    /* Arrondit les coins du bloc. */
-    border-radius: 1rem;
-    /* Applique le texte en blanc. */
+/* Apply global typography in the whole back-office. */
+body {
+    /* Apply admin body font family. */
+    font-family: var(--admin-font-body);
+    /* Apply admin base text color. */
+    color: var(--admin-text);
+    /* Apply nuanced admin background atmosphere. */
+    background: radial-gradient(circle at 14% -11%, rgba(44, 123, 229, 0.12), transparent 36%), radial-gradient(circle at 100% 1%, rgba(73, 151, 255, 0.1), transparent 31%), linear-gradient(180deg, var(--admin-bg-elevated) 0%, var(--admin-bg) 100%);
+}
+
+/* Keep headings premium and consistent in back-office. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    /* Apply admin heading font family. */
+    font-family: var(--admin-font-heading);
+    /* Apply admin heading color. */
+    color: var(--admin-text);
+    /* Keep headings compact and modern. */
+    letter-spacing: -0.016em;
+}
+
+/* Apply muted helper text token in back-office. */
+.text-muted,
+.form-text,
+small,
+.small {
+    /* Keep helper text readable and consistent. */
+    color: var(--admin-text-muted) !important;
+}
+
+/* Harmonize button sizing in the whole back-office. */
+.btn {
+    /* Apply heading font family to controls. */
+    font-family: var(--admin-font-heading);
+    /* Reduce default button text size. */
+    font-size: 0.9rem;
+    /* Apply semibold button text weight. */
+    font-weight: 630;
+    /* Add subtle tracking to button labels. */
+    letter-spacing: 0.008em;
+    /* Reduce default button paddings. */
+    padding: 0.42rem 0.84rem;
+    /* Keep compact readable line-height. */
+    line-height: 1.25;
+    /* Remove rounded corners from all buttons. */
+    border-radius: 0;
+    /* Remove any glow/shadow from all buttons. */
+    box-shadow: none;
+}
+
+/* Harmonize large button sizing in back-office. */
+.btn.btn-lg,
+.btn-group-lg > .btn {
+    /* Reduce large button text size. */
+    font-size: 0.98rem;
+    /* Reduce large button vertical padding. */
+    padding-top: 0.56rem;
+    /* Reduce large button horizontal padding. */
+    padding-right: 1.06rem;
+    /* Reduce large button vertical padding. */
+    padding-bottom: 0.56rem;
+    /* Reduce large button horizontal padding. */
+    padding-left: 1.06rem;
+}
+
+/* Harmonize compact button sizing in back-office. */
+.btn.btn-sm,
+.btn-group-sm > .btn {
+    /* Reduce compact button text size. */
+    font-size: 0.8rem;
+    /* Reduce compact button vertical padding. */
+    padding-top: 0.3rem;
+    /* Reduce compact button horizontal padding. */
+    padding-right: 0.66rem;
+    /* Reduce compact button vertical padding. */
+    padding-bottom: 0.3rem;
+    /* Reduce compact button horizontal padding. */
+    padding-left: 0.66rem;
+}
+
+/* Define admin primary button style. */
+.btn-primary {
+    /* Apply flat accent background color. */
+    background: var(--admin-primary);
+    /* Keep crisp border edge for contrast. */
+    border: 1px solid transparent;
+    /* Keep buttons square in admin. */
+    border-radius: 0;
+    /* Keep glow disabled on primary buttons. */
+    box-shadow: none;
+}
+
+/* Define admin primary button hover style. */
+.btn-primary:hover {
+    /* Apply stronger accent on hover. */
+    background: var(--admin-primary-strong);
+    /* Keep label readable on hover. */
     color: #ffffff;
+    /* Keep glow disabled on hover. */
+    box-shadow: none;
 }
 
-/* Stylise le titre principal du dashboard. */
+/* Define admin outline button style. */
+.btn-outline-primary {
+    /* Apply accent text color. */
+    color: var(--admin-primary);
+    /* Apply accent border color. */
+    border-color: var(--admin-primary-edge);
+    /* Keep square button corners. */
+    border-radius: 0;
+    /* Keep glow disabled on outline buttons. */
+    box-shadow: none;
+}
+
+/* Define admin outline button hover style. */
+.btn-outline-primary:hover {
+    /* Keep hover text in white for contrast. */
+    color: #ffffff;
+    /* Fill outline button with accent on hover. */
+    background-color: var(--admin-primary);
+    /* Sync hover border with accent fill. */
+    border-color: var(--admin-primary);
+    /* Keep glow disabled on hover. */
+    box-shadow: none;
+}
+
+/* Keep visible focus style without glow ring. */
+.btn:focus,
+.btn:focus-visible {
+    /* Keep glow disabled on focus. */
+    box-shadow: none;
+    /* Keep a clean visible focus outline. */
+    outline: 2px solid var(--admin-primary);
+    /* Offset focus outline for clarity. */
+    outline-offset: 1px;
+}
+
+/* Apply premium atmosphere to the main content wrapper. */
+.content-wrapper {
+    /* Apply nuanced content background gradient. */
+    background: linear-gradient(180deg, var(--admin-bg-elevated) 0%, var(--admin-bg) 100%);
+}
+
+/* Soften top navigation bar in admin. */
+.content-top {
+    /* Apply glass-like topbar surface. */
+    background: rgba(250, 253, 255, 0.78);
+    /* Apply subtle separator under topbar. */
+    border-bottom: 1px solid var(--admin-line);
+    /* Add slight blur for premium depth. */
+    backdrop-filter: blur(8px);
+}
+
+/* Adapt top navigation bar in dark mode. */
+[data-bs-theme='dark'] .content-top {
+    /* Apply dark glass-like topbar surface. */
+    background: rgba(22, 33, 50, 0.78);
+}
+
+/* Soften side navigation panel in admin. */
+#main-menu {
+    /* Apply subtle side panel background. */
+    background: rgba(246, 250, 255, 0.78);
+    /* Apply right separator for menu panel. */
+    border-right: 1px solid var(--admin-line);
+}
+
+/* Adapt side navigation panel in dark mode. */
+[data-bs-theme='dark'] #main-menu {
+    /* Apply dark side panel background. */
+    background: rgba(21, 32, 48, 0.86);
+}
+
+/* Style the dashboard hero panel. */
+.admin-hero {
+    /* Apply premium blue-night gradient. */
+    background: linear-gradient(135deg, #1b365b 0%, #2c5d95 52%, #3a79bd 100%);
+    /* Add inner spacing in hero panel. */
+    padding: 1.5rem;
+    /* Round panel corners softly. */
+    border-radius: 1rem;
+    /* Keep text in bright white for contrast. */
+    color: #ffffff;
+    /* Add soft elevation shadow. */
+    box-shadow: var(--admin-shadow-1);
+}
+
+/* Style the dashboard hero title. */
 .admin-hero__title {
-    /* Supprime les marges par défaut du titre. */
+    /* Remove default title margin. */
     margin: 0;
-    /* Ajuste la taille du titre. */
+    /* Tune hero title size. */
     font-size: 1.6rem;
-    /* Renforce la graisse du titre. */
-    font-weight: 700;
+    /* Strengthen hero title weight. */
+    font-weight: 780;
+    /* Apply heading family in hero title. */
+    font-family: var(--admin-font-heading);
 }
 
-/* Stylise le sous-titre du dashboard. */
+/* Style the dashboard hero subtitle. */
 .admin-hero__subtitle {
-    /* Définit la marge supérieure du sous-titre. */
+    /* Add top space above subtitle. */
     margin: 0.5rem 0 0;
-    /* Réduit l'opacité pour la hiérarchie visuelle. */
-    opacity: 0.9;
+    /* Keep subtitle lightly translucent. */
+    opacity: 0.92;
 }
 
-/* Stylise les cartes KPI du dashboard. */
+/* Style dashboard KPI cards. */
 .admin-kpi-card {
-    /* Définit un fond blanc net. */
-    background: #ffffff;
-    /* Arrondit les coins de la carte. */
+    /* Apply layered surface background. */
+    background: linear-gradient(168deg, var(--admin-surface) 0%, var(--admin-surface-soft) 100%);
+    /* Round KPI card corners. */
     border-radius: 0.9rem;
-    /* Ajoute une bordure discrète. */
-    border: 1px solid #e7edf5;
-    /* Ajoute un padding interne. */
+    /* Apply subtle border for separation. */
+    border: 1px solid var(--admin-line);
+    /* Add internal KPI spacing. */
     padding: 1rem 1.1rem;
-    /* Ajoute une ombre légère. */
-    box-shadow: 0 10px 30px rgba(15, 76, 129, 0.06);
+    /* Add soft KPI elevation. */
+    box-shadow: var(--admin-shadow-1);
 }
 
-/* Stylise le libellé des KPI. */
+/* Style KPI label text. */
 .admin-kpi-label {
-    /* Supprime la marge par défaut. */
+    /* Remove default label margin. */
     margin: 0;
-    /* Définit la couleur secondaire du texte. */
-    color: #5b6b7c;
-    /* Réduit la taille du texte de label. */
+    /* Apply muted label color. */
+    color: var(--admin-text-muted);
+    /* Keep KPI label compact. */
     font-size: 0.9rem;
 }
 
-/* Stylise la valeur des KPI. */
+/* Style KPI numeric values. */
 .admin-kpi-value {
-    /* Définit la marge supérieure de la valeur. */
+    /* Add slight top space above value. */
     margin: 0.25rem 0 0;
-    /* Renforce la couleur de la valeur. */
-    color: var(--admin-text-strong);
-    /* Augmente la taille visuelle de la valeur. */
+    /* Apply strong text color. */
+    color: var(--admin-text);
+    /* Increase value size for hierarchy. */
     font-size: 1.7rem;
-    /* Renforce la graisse visuelle. */
-    font-weight: 700;
+    /* Reinforce numeric value weight. */
+    font-weight: 760;
+    /* Apply heading family to KPI values. */
+    font-family: var(--admin-font-heading);
 }
 
-/* Stylise les panneaux secondaires du dashboard. */
+/* Style secondary dashboard panels. */
 .admin-panel {
-    /* Définit un fond blanc pour la lisibilité. */
-    background: #ffffff;
-    /* Arrondit les coins des panneaux. */
+    /* Apply layered panel surface background. */
+    background: linear-gradient(168deg, var(--admin-surface) 0%, var(--admin-surface-soft) 100%);
+    /* Round panel corners softly. */
     border-radius: 0.9rem;
-    /* Ajoute une bordure discrète. */
-    border: 1px solid #e7edf5;
-    /* Ajoute un padding interne. */
+    /* Apply subtle panel border. */
+    border: 1px solid var(--admin-line);
+    /* Add panel internal spacing. */
     padding: 1rem 1.1rem;
-    /* Ajoute une ombre légère. */
-    box-shadow: 0 10px 30px rgba(15, 76, 129, 0.06);
+    /* Add soft panel elevation. */
+    box-shadow: var(--admin-shadow-1);
 }
 
-/* Stylise le titre des panneaux secondaires. */
+/* Style secondary panel titles. */
 .admin-panel__title {
-    /* Supprime la marge par défaut. */
+    /* Remove default panel title margin. */
     margin: 0 0 0.8rem;
-    /* Définit la taille de titre de section. */
+    /* Set panel title size. */
     font-size: 1.05rem;
-    /* Renforce la graisse du titre. */
-    font-weight: 700;
+    /* Reinforce panel title weight. */
+    font-weight: 760;
+    /* Apply heading family to panel titles. */
+    font-family: var(--admin-font-heading);
 }
 
-/* Réinitialise la liste custom du dashboard. */
+/* Reset custom list base style. */
 .admin-list {
-    /* Supprime les puces par défaut. */
+    /* Remove default bullets. */
     list-style: none;
-    /* Supprime les paddings par défaut. */
+    /* Remove default left padding. */
     padding: 0;
-    /* Supprime les marges par défaut. */
+    /* Remove default block margin. */
     margin: 0;
 }
 
-/* Stylise chaque ligne de la liste custom. */
+/* Style each custom list row. */
 .admin-list__item {
-    /* Affiche les éléments sur une ligne. */
+    /* Keep items on one horizontal row. */
     display: flex;
-    /* Espace les éléments horizontalement. */
+    /* Separate row items horizontally. */
     justify-content: space-between;
-    /* Centre verticalement les éléments. */
+    /* Vertically center row items. */
     align-items: center;
-    /* Ajoute un espacement vertical. */
+    /* Add vertical row spacing. */
     padding: 0.45rem 0;
-    /* Ajoute une bordure de séparation. */
-    border-bottom: 1px solid #edf2f9;
+    /* Add a subtle row divider. */
+    border-bottom: 1px solid var(--admin-line);
 }
 
-/* Supprime la bordure sur le dernier item. */
+/* Remove divider on the last custom list row. */
 .admin-list__item:last-child {
-    /* Retire la bordure basse du dernier item. */
+    /* Hide bottom border for last row. */
     border-bottom: none;
 }
 
-/* Adoucit le mode sombre EasyAdmin avec un noir moins profond. */
-[data-bs-theme='dark'] {
-    /* Remplace le fond global par un anthracite plus doux. */
-    --bs-body-bg: #1f2329;
-    /* Éclaircit légèrement la surface secondaire. */
-    --bs-secondary-bg: #262b32;
-    /* Éclaircit légèrement la surface tertiaire. */
-    --bs-tertiary-bg: #2c323a;
-    /* Adoucit les bordures en mode sombre. */
-    --bs-border-color: #3a4049;
-}
-
-/* Adoucit le panneau latéral en mode sombre. */
-[data-bs-theme='dark'] #main-menu {
-    /* Applique un fond anthracite premium au menu. */
-    background: #232831;
-}
-
-/* Adoucit la barre supérieure en mode sombre. */
-[data-bs-theme='dark'] .content-top {
-    /* Applique un anthracite plus clair à la topbar. */
-    background: #252b33;
-}
-
-/* Adoucit le fond de la zone de contenu en mode sombre. */
-[data-bs-theme='dark'] .content-wrapper {
-    /* Applique un dégradé sombre mais moins agressif. */
-    background: linear-gradient(180deg, #222830 0%, #1f242c 100%);
+/* Keep table and card surfaces coherent with tokens. */
+.content-panel,
+.table,
+.ea-content .card {
+    /* Apply token-based border color. */
+    border-color: var(--admin-line) !important;
 }

@@ -1,12 +1,12 @@
 <?php
-// Déclare le namespace du CRUD article.
+// Declare le namespace du CRUD article.
 namespace App\Controller\Admin;
 
-// Importe l'entité Article.
+// Importe l'entite Article.
 use App\Entity\Article;
-// Importe l'entité User.
+// Importe l'entite User.
 use App\Entity\User;
-// Importe le service de génération de slug.
+// Importe le service de generation de slug.
 use App\Service\ContentSlugger;
 // Importe la configuration d'actions EasyAdmin.
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -15,13 +15,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 // Importe la configuration des filtres EasyAdmin.
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
-// Importe le contrôleur CRUD abstrait.
+// Importe le controleur CRUD abstrait.
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 // Importe les champs EasyAdmin.
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 // Importe les filtres EasyAdmin.
@@ -29,24 +30,24 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
-// Importe le helper sécurité Symfony.
+// Importe le helper securite Symfony.
 use Symfony\Bundle\SecurityBundle\Security;
-// Importe l'attribut de sécurité Symfony.
+// Importe l'attribut de securite Symfony.
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-// Réserve ce CRUD aux éditeurs et administrateurs.
+// Reserve ce CRUD aux editeurs et administrateurs.
 #[IsGranted('ROLE_EDITOR')]
 class ArticleCrudController extends AbstractCrudController
 {
-    // Injecte les dépendances utiles.
+    // Injecte les dependances utiles.
     public function __construct(
         private readonly ContentSlugger $contentSlugger,
         private readonly Security $security
     ) {
-        // Ne réalise aucun traitement complémentaire.
+        // Ne realise aucun traitement complementaire.
     }
 
-    // Retourne la classe d'entité gérée.
+    // Retourne la classe d'entite geree.
     public static function getEntityFqcn(): string
     {
         // Retourne la classe Article.
@@ -58,57 +59,57 @@ class ArticleCrudController extends AbstractCrudController
     {
         // Retourne les permissions par action.
         return $actions
-            // Autorise l'index aux éditeurs.
+            // Autorise l'index aux editeurs.
             ->setPermission(Action::INDEX, 'ROLE_EDITOR')
-            // Autorise la création aux éditeurs.
+            // Autorise la creation aux editeurs.
             ->setPermission(Action::NEW, 'ROLE_EDITOR')
-            // Autorise l'édition aux éditeurs.
+            // Autorise l'edition aux editeurs.
             ->setPermission(Action::EDIT, 'ROLE_EDITOR')
-            // Réserve la suppression aux admins.
+            // Reserve la suppression aux admins.
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
 
     // Configure les options globales du CRUD.
     public function configureCrud(Crud $crud): Crud
     {
-        // Retourne la configuration de lisibilité.
+        // Retourne la configuration de lisibilite.
         return $crud
-            // Définit le label singulier.
+            // Definit le label singulier.
             ->setEntityLabelInSingular('Article')
-            // Définit le label pluriel.
+            // Definit le label pluriel.
             ->setEntityLabelInPlural('Articles')
             // Active la recherche multi-champs.
             ->setSearchFields(['title', 'slug', 'content', 'metaDescription', 'category.name', 'author.email', 'tags.name'])
-            // Définit le tri par défaut.
+            // Definit le tri par defaut.
             ->setDefaultSort(['publishedAt' => 'DESC', 'createdAt' => 'DESC']);
     }
 
     // Configure les filtres de la grille.
     public function configureFilters(Filters $filters): Filters
     {
-        // Retourne les filtres utiles à la modération.
+        // Retourne les filtres utiles a la moderation.
         return $filters
             // Ajoute un filtre titre.
             ->add(TextFilter::new('title', 'Titre'))
             // Ajoute un filtre slug.
             ->add(TextFilter::new('slug', 'Slug'))
-            // Ajoute un filtre catégorie.
-            ->add(EntityFilter::new('category', 'Catégorie'))
+            // Ajoute un filtre categorie.
+            ->add(EntityFilter::new('category', 'Categorie'))
             // Ajoute un filtre auteur.
             ->add(EntityFilter::new('author', 'Auteur'))
             // Ajoute un filtre tags.
             ->add(EntityFilter::new('tags', 'Tags'))
-            // Ajoute un filtre statut de modération.
+            // Ajoute un filtre statut de moderation.
             ->add(ChoiceFilter::new('moderationStatus', 'Statut')->setChoices([
                 'En attente' => 'pending',
-                'Approuvé' => 'approved',
-                'Rejeté' => 'rejected',
+                'Approuve' => 'approved',
+                'Rejete' => 'rejected',
             ]))
             // Ajoute un filtre date de publication.
-            ->add(DateTimeFilter::new('publishedAt', 'Publié le'));
+            ->add(DateTimeFilter::new('publishedAt', 'Publie le'));
     }
 
-    // Configure les champs affichés selon le contexte.
+    // Configure les champs affiches selon le contexte.
     public function configureFields(string $pageName): iterable
     {
         // Retourne la liste des champs.
@@ -119,74 +120,74 @@ class ArticleCrudController extends AbstractCrudController
             TextField::new('title', 'Titre'),
             // Affiche le slug.
             TextField::new('slug', 'Slug')->setRequired(false),
-            // Affiche le statut en badges colorés.
+            // Affiche le statut en badges colores.
             ChoiceField::new('moderationStatus', 'Statut')
                 ->setChoices([
                     'En attente' => 'pending',
-                    'Approuvé' => 'approved',
-                    'Rejeté' => 'rejected',
+                    'Approuve' => 'approved',
+                    'Rejete' => 'rejected',
                 ])
                 ->renderAsBadges([
                     'pending' => 'warning',
                     'approved' => 'success',
                     'rejected' => 'danger',
                 ]),
-            // Affiche la catégorie liée.
-            AssociationField::new('category', 'Catégorie')->setFormTypeOption('choice_label', 'name'),
-            // Affiche l'auteur lié.
+            // Affiche la categorie liee.
+            AssociationField::new('category', 'Categorie')->setFormTypeOption('choice_label', 'name'),
+            // Affiche l'auteur lie.
             AssociationField::new('author', 'Auteur')->setFormTypeOption('choice_label', 'email'),
             // Affiche la relation tags.
             AssociationField::new('tags', 'Tags')->setFormTypeOption('choice_label', 'name'),
             // Affiche la date de publication.
-            DateTimeField::new('publishedAt', 'Publié le')->setRequired(false),
-            // Affiche la méta-description hors index.
-            TextareaField::new('metaDescription', 'Méta-description')->setRequired(false)->hideOnIndex(),
-            // Affiche le contenu hors index.
-            TextareaField::new('content', 'Contenu')->hideOnIndex(),
-            // Affiche la date de création hors formulaire.
-            DateTimeField::new('createdAt', 'Créé le')->hideOnForm(),
-            // Affiche la date de mise à jour hors formulaire.
-            DateTimeField::new('updatedAt', 'Mis à jour le')->hideOnForm(),
+            DateTimeField::new('publishedAt', 'Publie le')->setRequired(false),
+            // Affiche la meta-description hors index.
+            TextareaField::new('metaDescription', 'Meta-description')->setRequired(false)->hideOnIndex(),
+            // Active un editeur WYSIWYG pour le contenu hors index.
+            TextEditorField::new('content', 'Contenu')->hideOnIndex(),
+            // Affiche la date de creation hors formulaire.
+            DateTimeField::new('createdAt', 'Cree le')->hideOnForm(),
+            // Affiche la date de mise a jour hors formulaire.
+            DateTimeField::new('updatedAt', 'Mis a jour le')->hideOnForm(),
         ];
     }
 
-    // Prépare l'entité avant création.
+    // Prepare l'entite avant creation.
     public function persistEntity(\Doctrine\ORM\EntityManagerInterface $entityManager, $entityInstance): void
     {
-        // Vérifie le type d'entité article.
+        // Verifie le type d'entite article.
         if ($entityInstance instanceof Article) {
-            // Vérifie si le slug est vide.
+            // Genere le slug automatiquement si vide.
             if ($entityInstance->getSlug() === '') {
-                // Génère automatiquement le slug depuis le titre.
+                // Construit le slug depuis le titre.
                 $entityInstance->setSlug($this->contentSlugger->slugify($entityInstance->getTitle()));
             }
-            // Vérifie si l'auteur est absent.
+
+            // Definit l'auteur connecte si absent.
             if ($entityInstance->getAuthor() === null) {
-                // Récupère l'utilisateur connecté.
+                // Recupere l'utilisateur connecte.
                 $user = $this->security->getUser();
-                // Vérifie le type utilisateur.
+                // Verifie le type utilisateur.
                 if ($user instanceof User) {
-                    // Affecte l'auteur connecté.
+                    // Affecte l'auteur connecte.
                     $entityInstance->setAuthor($user);
                 }
             }
         }
 
-        // Exécute la persistance standard.
+        // Execute la persistance standard.
         parent::persistEntity($entityManager, $entityInstance);
     }
 
-    // Prépare l'entité avant mise à jour.
+    // Prepare l'entite avant mise a jour.
     public function updateEntity(\Doctrine\ORM\EntityManagerInterface $entityManager, $entityInstance): void
     {
-        // Vérifie le type d'entité et un slug vide.
+        // Verifie le type d'entite et un slug vide.
         if ($entityInstance instanceof Article && $entityInstance->getSlug() === '') {
-            // Génère automatiquement le slug depuis le titre.
+            // Genere automatiquement le slug depuis le titre.
             $entityInstance->setSlug($this->contentSlugger->slugify($entityInstance->getTitle()));
         }
 
-        // Exécute la mise à jour standard.
+        // Execute la mise a jour standard.
         parent::updateEntity($entityManager, $entityInstance);
     }
 }
-

@@ -22,11 +22,16 @@ class PageController extends AbstractController
     #[Route('/pages', name: 'front_page_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        // Recupere toutes les pages validees.
-        $pages = $entityManager->getRepository(Page::class)->findBy(
-            ['moderationStatus' => 'approved'],
-            ['updatedAt' => 'DESC']
-        );
+        // Recupere toutes les pages validees avec tri parent/enfant.
+        $pages = $entityManager->getRepository(Page::class)
+            ->createQueryBuilder('p')
+            ->leftJoin('p.parent', 'parent')
+            ->andWhere('p.moderationStatus = :status')
+            ->setParameter('status', 'approved')
+            ->addOrderBy('parent.id', 'ASC')
+            ->addOrderBy('p.title', 'ASC')
+            ->getQuery()
+            ->getResult();
 
         // Construit la reponse Twig de la liste.
         $response = $this->render('front/page/index.html.twig', [

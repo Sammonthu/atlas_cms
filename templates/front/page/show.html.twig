@@ -39,6 +39,10 @@
                         <h2 class="h6">Informations</h2>
                         {# Show slug value. #}
                         <p class="small text-muted mb-2">Slug URL: <code>{{ page.slug }}</code></p>
+                        {# Show parent page when available. #}
+                        {% if page.parent %}
+                            <p class="small text-muted mb-2">Page parente: <a href="{{ path('front_page_show', {slug: page.parent.slug}) }}">{{ page.parent.title }}</a></p>
+                        {% endif %}
                         {# Show status badge. #}
                         <p class="small text-muted mb-0">Statut: <span class="badge text-bg-success">Validee</span></p>
                     </div>

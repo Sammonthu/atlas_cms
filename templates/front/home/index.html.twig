@@ -6,49 +6,43 @@
 {% set metaDescription = 'Bienvenue sur Atlas CMS : pages publiques, blog editorial et galeries photos.' %}
 {# Define main page body. #}
 {% block body %}
-    {# Open immersive hero section. #}
-    <section class="front-hero">
-        {# Open centered container. #}
-        <div class="container">
-            {# Open hero grid row. #}
-            <div class="row g-4 align-items-center">
-                {# Open left hero text column. #}
-                <div class="col-12 col-lg-7 reveal">
-                    {# Render hero chip. #}
-                    <span class="ui-chip mb-3">Atlas CMS · Experience fluide</span>
-                    {# Render hero heading. #}
-                    <h1 class="front-hero__title mb-3">Publiez avec clarte. Presentez avec elegance.</h1>
-                    {# Render hero subtitle. #}
-                    <p class="front-hero__subtitle mb-4">Un front-office minimaliste, moderne et premium pour valoriser pages, articles, galeries et commentaires avec une vraie qualite de soutenance.</p>
-                    {# Open hero action group. #}
-                    <div class="d-flex flex-wrap gap-2">
-                        {# Render primary CTA. #}
-                        <a class="btn btn-primary btn-lg" href="{{ path('front_page_index') }}">Explorer les pages</a>
-                        {# Render secondary CTA. #}
-                        <a class="btn btn-outline-primary btn-lg" href="{{ path('front_blog_index') }}">Lire le blog</a>
-                    </div>
-                </div>
-                {# Open right hero stats column. #}
-                <div class="col-12 col-lg-5 reveal">
-                    {# Open hero stats glass panel. #}
-                    <div class="front-hero-card">
-                        {# Render first stat row. #}
-                        <div class="front-hero-card__item">
-                            <p class="front-hero-card__label">Pages validees</p>
-                            <p class="front-hero-card__value">{{ latestPages|length }}</p>
-                        </div>
-                        {# Render second stat row. #}
-                        <div class="front-hero-card__item">
-                            <p class="front-hero-card__label">Articles recents</p>
-                            <p class="front-hero-card__value">{{ latestArticles|length }}</p>
-                        </div>
-                        {# Render third stat row. #}
-                        <div class="front-hero-card__item">
-                            <p class="front-hero-card__label">Galeries visibles</p>
-                            <p class="front-hero-card__value">{{ latestGalleries|length }}</p>
-                        </div>
-                    </div>
-                </div>
+    {# Select the first recent gallery when available. #}
+    {% set heroGallery = latestGalleries|first %}
+    {# Select the first image of the selected gallery when available. #}
+    {% set heroImage = heroGallery and heroGallery.images|length > 0 ? heroGallery.images|first : null %}
+    {# Resolve hero image path for the media layer. #}
+    {% set heroImagePath = heroImage ? asset(heroImage.filePath) : null %}
+
+    {# Open premium visual hero section. #}
+    <section class="front-hero front-hero--visual" aria-labelledby="homeHeroTitle">
+        {# Render hero media only when an image exists. #}
+        {% if heroImagePath %}
+            {# Render full-bleed hero media. #}
+            <img
+                class="front-hero__media"
+                src="{{ heroImagePath }}"
+                alt="{{ heroImage.caption ?: 'Visuel principal Atlas CMS' }}"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+            >
+        {% endif %}
+        {# Render dark overlay for strong text readability. #}
+        <div class="front-hero__overlay" aria-hidden="true"></div>
+        {# Render ambient glow to enrich premium depth. #}
+        <div class="front-hero__aura" aria-hidden="true"></div>
+        {# Open centered hero content container. #}
+        <div class="container position-relative">
+            {# Open hero copy wrapper. #}
+            <div class="front-hero__content reveal is-visible">
+                {# Render hero contextual chip. #}
+                <span class="ui-chip front-hero__chip mb-3">Atlas CMS - Interface editoriale premium</span>
+                {# Render hero main heading. #}
+                <h1 class="front-hero__title mb-3" id="homeHeroTitle">Publiez avec impact. Valorisez chaque contenu.</h1>
+                {# Render concise hero supporting copy. #}
+                <p class="front-hero__subtitle mb-4">Une experience moderne pour presenter pages, articles et galeries avec une qualite visuelle professionnelle.</p>
+                {# Render primary hero CTA. #}
+                <a class="btn btn-primary btn-lg front-hero__cta" href="{{ path('front_page_index') }}" aria-label="Decouvrir les contenus du CMS">Decouvrir le CMS</a>
             </div>
         </div>
     </section>

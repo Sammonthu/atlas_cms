@@ -1,44 +1,39 @@
 <?php
-// Déclare le namespace du contrôleur de sécurité.
+// Declare le namespace du controleur de securite.
 namespace App\Controller;
 
-// Importe le contrôleur abstrait Symfony.
+// Importe le controleur abstrait Symfony.
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-// Importe la réponse HTTP Symfony.
+// Importe la reponse HTTP Symfony.
 use Symfony\Component\HttpFoundation\Response;
 // Importe l'attribut de route Symfony.
 use Symfony\Component\Routing\Attribute\Route;
 // Importe l'utilitaire d'authentification Symfony.
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-// Déclare le contrôleur de connexion/déconnexion.
+// Declare le controleur de connexion/deconnexion.
 class SecurityController extends AbstractController
 {
-    // Déclare la route de connexion.
+    // Declare la route de connexion.
     #[Route('/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // Vérifie si un utilisateur est déjà connecté.
-        if ($this->getUser() !== null) {
-            // Redirige les utilisateurs connectés vers l'accueil.
-            return $this->redirectToRoute('home');
-        }
-
-        // Rend la page de connexion avec erreurs éventuelles.
+        // Rend la page de connexion avec erreurs eventuelles.
         return $this->render('security/login.html.twig', [
-            // Injecte la dernière erreur d'authentification.
+            // Injecte la derniere erreur d'authentification.
             'error' => $authenticationUtils->getLastAuthenticationError(),
             // Injecte le dernier identifiant saisi.
             'last_username' => $authenticationUtils->getLastUsername(),
+            // Masque le chrome global pour eviter les resolutions de token inutiles.
+            'hideLayoutChrome' => true,
         ]);
     }
 
-    // Déclare la route de déconnexion.
+    // Declare la route de deconnexion.
     #[Route('/logout', name: 'app_logout')]
     public function logout(): never
     {
-        // Lève l'exception standard car Symfony intercepte cette route.
+        // Leve l'exception standard car Symfony intercepte cette route.
         throw new \LogicException('This method can be blank: it is intercepted by the firewall.');
     }
 }
-

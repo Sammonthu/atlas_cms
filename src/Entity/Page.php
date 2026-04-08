@@ -1,83 +1,98 @@
 <?php
-// Déclare le namespace de l'entité page.
+// Declare le namespace de l'entite page.
 namespace App\Entity;
 
+// Importe les classes de collection Doctrine.
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 // Importe le mapping ORM Doctrine.
 use Doctrine\ORM\Mapping as ORM;
 // Importe les contraintes de validation Symfony.
 use Symfony\Component\Validator\Constraints as Assert;
 
-// Déclare l'entité Page.
+// Declare l'entite Page.
 #[ORM\Entity]
-// Déclare la table SQL.
+// Declare la table SQL.
 #[ORM\Table(name: 'page')]
 class Page
 {
-    // Déclare la clé primaire.
+    // Declare la cle primaire.
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    // Déclare le titre de la page.
+    // Declare le titre de la page.
     #[ORM\Column(length: 190)]
     #[Assert\NotBlank(message: 'Le titre est obligatoire.')]
-    #[Assert\Length(max: 190, maxMessage: 'Le titre ne peut pas dépasser {{ limit }} caractères.')]
+    #[Assert\Length(max: 190, maxMessage: 'Le titre ne peut pas depasser {{ limit }} caracteres.')]
     private string $title = '';
 
-    // Déclare le contenu de la page.
+    // Declare le contenu de la page.
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank(message: 'Le contenu est obligatoire.')]
     private string $content = '';
 
-    // Déclare le slug SEO de la page.
+    // Declare le slug SEO de la page.
     #[ORM\Column(length: 220, unique: true)]
     #[Assert\NotBlank(message: 'Le slug est obligatoire.')]
     #[Assert\Regex(pattern: '/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: 'Le slug doit contenir uniquement des lettres minuscules, chiffres et tirets.')]
     private string $slug = '';
 
-    // Déclare la méta-description SEO.
+    // Declare la meta-description SEO.
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255, maxMessage: 'La méta-description ne peut pas dépasser {{ limit }} caractères.')]
+    #[Assert\Length(max: 255, maxMessage: 'La meta-description ne peut pas depasser {{ limit }} caracteres.')]
     private ?string $metaDescription = null;
 
-    // Déclare le statut de modération.
+    // Declare le statut de moderation.
     #[ORM\Column(length: 30)]
-    #[Assert\Choice(choices: ['pending', 'approved', 'rejected'], message: 'Le statut de modération est invalide.')]
+    #[Assert\Choice(choices: ['pending', 'approved', 'rejected'], message: 'Le statut de moderation est invalide.')]
     private string $moderationStatus = 'pending';
 
-    // Déclare la date de création.
+    // Declare la date de creation.
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
 
-    // Déclare la date de mise à jour.
+    // Declare la date de mise a jour.
     #[ORM\Column]
     private \DateTimeImmutable $updatedAt;
 
-    // Déclare la relation propriétaire vers la catégorie.
+    // Declare la relation proprietaire vers la categorie.
     #[ORM\ManyToOne(inversedBy: 'pages')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'RESTRICT')]
-    #[Assert\NotNull(message: 'La catégorie de page est obligatoire.')]
+    #[Assert\NotNull(message: 'La categorie de page est obligatoire.')]
     private ?PageCategory $category = null;
 
-    // Déclare la relation propriétaire vers la galerie.
+    // Declare la relation proprietaire vers la galerie.
     #[ORM\ManyToOne(inversedBy: 'pages')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Gallery $gallery = null;
 
-    // Initialise les valeurs par défaut.
+    // Declare la relation vers la page parente pour l'arborescence.
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    private ?self $parent = null;
+
+    // Declare la relation inverse vers les pages enfants.
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    #[ORM\OrderBy(['title' => 'ASC'])]
+    private Collection $children;
+
+    // Initialise les valeurs par defaut.
     public function __construct()
     {
-        // Initialise la date de création.
+        // Initialise la collection des pages enfants.
+        $this->children = new ArrayCollection();
+        // Initialise la date de creation.
         $this->createdAt = new \DateTimeImmutable();
-        // Initialise la date de mise à jour.
+        // Initialise la date de mise a jour.
         $this->updatedAt = new \DateTimeImmutable();
     }
 
     // Retourne l'id.
     public function getId(): ?int
     {
-        // Retourne la clé primaire.
+        // Retourne la cle primaire.
         return $this->id;
     }
 
@@ -88,12 +103,12 @@ class Page
         return $this->title;
     }
 
-    // Définit le titre.
+    // Definit le titre.
     public function setTitle(string $title): self
     {
-        // Affecte le titre nettoyé.
+        // Affecte le titre nettoye.
         $this->title = trim($title);
-        // Met à jour la date de modification.
+        // Met a jour la date de modification.
         $this->touch();
         // Retourne l'instance.
         return $this;
@@ -106,12 +121,12 @@ class Page
         return $this->content;
     }
 
-    // Définit le contenu.
+    // Definit le contenu.
     public function setContent(string $content): self
     {
         // Affecte le contenu.
         $this->content = $content;
-        // Met à jour la date de modification.
+        // Met a jour la date de modification.
         $this->touch();
         // Retourne l'instance.
         return $this;
@@ -124,68 +139,68 @@ class Page
         return $this->slug;
     }
 
-    // Définit le slug.
+    // Definit le slug.
     public function setSlug(string $slug): self
     {
-        // Affecte le slug nettoyé.
+        // Affecte le slug nettoye.
         $this->slug = trim($slug);
-        // Met à jour la date de modification.
+        // Met a jour la date de modification.
         $this->touch();
         // Retourne l'instance.
         return $this;
     }
 
-    // Retourne la méta-description.
+    // Retourne la meta-description.
     public function getMetaDescription(): ?string
     {
-        // Retourne la méta-description.
+        // Retourne la meta-description.
         return $this->metaDescription;
     }
 
-    // Définit la méta-description.
+    // Definit la meta-description.
     public function setMetaDescription(?string $metaDescription): self
     {
-        // Affecte la méta-description.
+        // Affecte la meta-description.
         $this->metaDescription = $metaDescription !== null ? trim($metaDescription) : null;
-        // Met à jour la date de modification.
+        // Met a jour la date de modification.
         $this->touch();
         // Retourne l'instance.
         return $this;
     }
 
-    // Retourne le statut de modération.
+    // Retourne le statut de moderation.
     public function getModerationStatus(): string
     {
         // Retourne le statut.
         return $this->moderationStatus;
     }
 
-    // Définit le statut de modération.
+    // Definit le statut de moderation.
     public function setModerationStatus(string $moderationStatus): self
     {
         // Affecte le statut.
         $this->moderationStatus = $moderationStatus;
-        // Met à jour la date de modification.
+        // Met a jour la date de modification.
         $this->touch();
         // Retourne l'instance.
         return $this;
     }
 
-    // Retourne la date de création.
+    // Retourne la date de creation.
     public function getCreatedAt(): \DateTimeImmutable
     {
-        // Retourne la date de création.
+        // Retourne la date de creation.
         return $this->createdAt;
     }
 
-    // Retourne la date de mise à jour.
+    // Retourne la date de mise a jour.
     public function getUpdatedAt(): \DateTimeImmutable
     {
-        // Retourne la date de mise à jour.
+        // Retourne la date de mise a jour.
         return $this->updatedAt;
     }
 
-    // Met à jour le timestamp.
+    // Met a jour le timestamp.
     public function touch(): self
     {
         // Affecte la date courante.
@@ -194,19 +209,19 @@ class Page
         return $this;
     }
 
-    // Retourne la catégorie.
+    // Retourne la categorie.
     public function getCategory(): ?PageCategory
     {
-        // Retourne la catégorie.
+        // Retourne la categorie.
         return $this->category;
     }
 
-    // Définit la catégorie.
+    // Definit la categorie.
     public function setCategory(?PageCategory $category): self
     {
-        // Affecte la catégorie.
+        // Affecte la categorie.
         $this->category = $category;
-        // Met à jour la date de modification.
+        // Met a jour la date de modification.
         $this->touch();
         // Retourne l'instance.
         return $this;
@@ -219,22 +234,74 @@ class Page
         return $this->gallery;
     }
 
-    // Définit la galerie.
+    // Definit la galerie.
     public function setGallery(?Gallery $gallery): self
     {
         // Affecte la galerie.
         $this->gallery = $gallery;
-        // Met à jour la date de modification.
+        // Met a jour la date de modification.
         $this->touch();
         // Retourne l'instance.
         return $this;
     }
 
-    // Retourne une représentation texte.
+    // Retourne la page parente.
+    public function getParent(): ?self
+    {
+        // Retourne la page parente.
+        return $this->parent;
+    }
+
+    // Definit la page parente.
+    public function setParent(?self $parent): self
+    {
+        // Evite de definir la page elle-meme comme parent.
+        $this->parent = $parent === $this ? null : $parent;
+        // Met a jour la date de modification.
+        $this->touch();
+        // Retourne l'instance.
+        return $this;
+    }
+
+    // Retourne les pages enfants.
+    public function getChildren(): Collection
+    {
+        // Retourne la collection des pages enfants.
+        return $this->children;
+    }
+
+    // Ajoute une page enfant.
+    public function addChild(self $child): self
+    {
+        // Verifie si l'enfant est deja present.
+        if (!$this->children->contains($child)) {
+            // Ajoute l'enfant a la collection.
+            $this->children->add($child);
+            // Associe le parent sur l'enfant.
+            $child->setParent($this);
+        }
+
+        // Retourne l'instance.
+        return $this;
+    }
+
+    // Supprime une page enfant.
+    public function removeChild(self $child): self
+    {
+        // Retire l'enfant de la collection.
+        if ($this->children->removeElement($child) && $child->getParent() === $this) {
+            // Retire la reference parent sur l'enfant.
+            $child->setParent(null);
+        }
+
+        // Retourne l'instance.
+        return $this;
+    }
+
+    // Retourne une representation texte.
     public function __toString(): string
     {
         // Retourne le titre.
         return $this->title;
     }
 }
-

@@ -1,8 +1,8 @@
 <?php
-// Déclare le namespace du CRUD commentaire.
+// Declare le namespace du CRUD commentaire.
 namespace App\Controller\Admin;
 
-// Importe l'entité Comment.
+// Importe l'entite Comment.
 use App\Entity\Comment;
 // Importe l'EntityManager Doctrine.
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,9 +15,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 // Importe le contexte EasyAdmin.
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
-// Importe le contrôleur CRUD abstrait.
+// Importe le controleur CRUD abstrait.
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-// Importe le générateur d'URL admin.
+// Importe le generateur d'URL admin.
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 // Importe les champs EasyAdmin.
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -30,22 +30,22 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
-// Importe l'attribut de sécurité Symfony.
+// Importe l'attribut de securite Symfony.
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-// Réserve ce CRUD aux éditeurs et administrateurs.
+// Reserve ce CRUD aux editeurs et administrateurs.
 #[IsGranted('ROLE_EDITOR')]
 class CommentCrudController extends AbstractCrudController
 {
-    // Injecte l'EntityManager et le générateur d'URL admin.
+    // Injecte l'EntityManager et le generateur d'URL admin.
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly AdminUrlGenerator $adminUrlGenerator
     ) {
-        // Ne réalise aucun traitement complémentaire.
+        // Ne realise aucun traitement complementaire.
     }
 
-    // Retourne la classe d'entité gérée.
+    // Retourne la classe d'entite geree.
     public static function getEntityFqcn(): string
     {
         // Retourne la classe Comment.
@@ -55,17 +55,17 @@ class CommentCrudController extends AbstractCrudController
     // Configure les actions disponibles.
     public function configureActions(Actions $actions): Actions
     {
-        // Construit l'action rapide d'approbation.
-        $approveAction = Action::new('approveComment', 'Approuver', 'fa fa-check')
+        // Construit l'action rapide d'activation.
+        $activateAction = Action::new('approveComment', 'Activer', 'fa fa-check')
             // Affiche l'action uniquement en index.
             ->displayIf(static fn (Comment $comment): bool => $comment->getStatus() !== Comment::STATUS_APPROVED)
             // Lien vers l'action CRUD interne.
             ->linkToCrudAction('approveComment')
-            // Applique un style succès.
+            // Applique un style succes.
             ->addCssClass('btn btn-sm btn-success');
 
-        // Construit l'action rapide de refus.
-        $rejectAction = Action::new('rejectComment', 'Refuser', 'fa fa-ban')
+        // Construit l'action rapide de desactivation.
+        $deactivateAction = Action::new('rejectComment', 'Desactiver', 'fa fa-ban')
             // Affiche l'action uniquement en index.
             ->displayIf(static fn (Comment $comment): bool => $comment->getStatus() !== Comment::STATUS_REJECTED)
             // Lien vers l'action CRUD interne.
@@ -75,108 +75,109 @@ class CommentCrudController extends AbstractCrudController
 
         // Retourne les permissions par action.
         return $actions
-            // Autorise l'index aux éditeurs.
+            // Autorise l'index aux editeurs.
             ->setPermission(Action::INDEX, 'ROLE_EDITOR')
-            // Autorise la création aux éditeurs.
+            // Autorise la creation aux editeurs.
             ->setPermission(Action::NEW, 'ROLE_EDITOR')
-            // Autorise l'édition aux éditeurs.
+            // Autorise l'edition aux editeurs.
             ->setPermission(Action::EDIT, 'ROLE_EDITOR')
-            // Réserve la suppression aux admins.
+            // Reserve la suppression aux admins.
             ->setPermission(Action::DELETE, 'ROLE_ADMIN')
-            // Ajoute l'action approuver en index.
-            ->add(Crud::PAGE_INDEX, $approveAction)
-            // Ajoute l'action refuser en index.
-            ->add(Crud::PAGE_INDEX, $rejectAction);
+            // Ajoute l'action activer en index.
+            ->add(Crud::PAGE_INDEX, $activateAction)
+            // Ajoute l'action desactiver en index.
+            ->add(Crud::PAGE_INDEX, $deactivateAction);
     }
 
     // Configure les options globales du CRUD.
     public function configureCrud(Crud $crud): Crud
     {
-        // Retourne la configuration de lisibilité.
+        // Retourne la configuration de lisibilite.
         return $crud
-            // Définit le label singulier.
+            // Definit le label singulier.
             ->setEntityLabelInSingular('Commentaire')
-            // Définit le label pluriel.
+            // Definit le label pluriel.
             ->setEntityLabelInPlural('Commentaires')
             // Active la recherche multi-champs.
             ->setSearchFields(['content', 'status', 'article.title', 'author.email'])
-            // Définit le tri par défaut.
+            // Definit le tri par defaut.
             ->setDefaultSort(['createdAt' => 'DESC']);
     }
 
     // Configure les filtres de la grille.
     public function configureFilters(Filters $filters): Filters
     {
-        // Retourne les filtres utiles à la modération.
+        // Retourne les filtres utiles a la moderation.
         return $filters
             // Ajoute un filtre contenu.
             ->add(TextFilter::new('content', 'Contenu'))
             // Ajoute un filtre statut.
             ->add(ChoiceFilter::new('status', 'Statut')->setChoices([
                 'En attente' => Comment::STATUS_PENDING,
-                'Approuvé' => Comment::STATUS_APPROVED,
-                'Refusé' => Comment::STATUS_REJECTED,
+                'Actif' => Comment::STATUS_APPROVED,
+                'Desactive' => Comment::STATUS_REJECTED,
             ]))
             // Ajoute un filtre article.
             ->add(EntityFilter::new('article', 'Article'))
             // Ajoute un filtre auteur.
             ->add(EntityFilter::new('author', 'Auteur'))
             // Ajoute un filtre date.
-            ->add(DateTimeFilter::new('createdAt', 'Créé le'));
+            ->add(DateTimeFilter::new('createdAt', 'Cree le'));
     }
 
-    // Configure les champs affichés selon le contexte.
+    // Configure les champs affiches selon le contexte.
     public function configureFields(string $pageName): iterable
     {
         // Retourne la liste des champs.
         return [
             // Affiche l'id uniquement en index.
             IdField::new('id')->onlyOnIndex(),
-            // Affiche le statut en badges colorés.
+            // Affiche le statut en badges colores.
             ChoiceField::new('status', 'Statut')
                 ->setChoices([
                     'En attente' => Comment::STATUS_PENDING,
-                    'Approuvé' => Comment::STATUS_APPROVED,
-                    'Refusé' => Comment::STATUS_REJECTED,
+                    'Actif' => Comment::STATUS_APPROVED,
+                    'Desactive' => Comment::STATUS_REJECTED,
                 ])
                 ->renderAsBadges([
                     Comment::STATUS_PENDING => 'warning',
                     Comment::STATUS_APPROVED => 'success',
                     Comment::STATUS_REJECTED => 'danger',
                 ]),
-            // Affiche l'article lié.
+            // Affiche l'article lie.
             AssociationField::new('article', 'Article')->setFormTypeOption('choice_label', 'title'),
-            // Affiche l'auteur lié.
+            // Affiche l'auteur lie.
             AssociationField::new('author', 'Auteur')->setFormTypeOption('choice_label', 'email'),
             // Affiche le contenu complet hors index.
             TextareaField::new('content', 'Contenu')->hideOnIndex(),
-            // Affiche un aperçu contenu en index.
-            TextareaField::new('content', 'Aperçu')
+            // Affiche un apercu contenu en index.
+            TextareaField::new('content', 'Apercu')
                 ->formatValue(static function ($value): string {
-                    // Convertit la valeur en chaîne.
+                    // Convertit la valeur en chaine.
                     $text = (string) $value;
                     // Retourne un extrait court.
                     return mb_strimwidth($text, 0, 90, '...');
                 })
                 ->onlyOnIndex(),
-            // Affiche la date de création hors formulaire.
-            DateTimeField::new('createdAt', 'Créé le')->hideOnForm(),
+            // Affiche la date de creation hors formulaire.
+            DateTimeField::new('createdAt', 'Cree le')->hideOnForm(),
         ];
     }
 
-    // Action d'approbation rapide depuis EasyAdmin.
+    // Action d'activation rapide depuis EasyAdmin.
     public function approveComment(AdminContext $context): \Symfony\Component\HttpFoundation\Response
     {
-        // Récupère l'entité courante du contexte admin.
+        // Recupere l'entite courante du contexte admin.
         $comment = $context->getEntity()->getInstance();
-        // Vérifie le type d'entité attendu.
+
+        // Verifie le type d'entite attendu.
         if ($comment instanceof Comment) {
-            // Définit le statut approuvé.
+            // Definit le statut actif.
             $comment->setStatus(Comment::STATUS_APPROVED);
-            // Exécute la transaction SQL.
+            // Execute la transaction SQL.
             $this->entityManager->flush();
             // Affiche un flash de confirmation.
-            $this->addFlash('success', 'Commentaire approuvé.');
+            $this->addFlash('success', 'Commentaire active.');
         }
 
         // Redirige vers la liste des commentaires.
@@ -186,19 +187,20 @@ class CommentCrudController extends AbstractCrudController
             ->generateUrl());
     }
 
-    // Action de refus rapide depuis EasyAdmin.
+    // Action de desactivation rapide depuis EasyAdmin.
     public function rejectComment(AdminContext $context): \Symfony\Component\HttpFoundation\Response
     {
-        // Récupère l'entité courante du contexte admin.
+        // Recupere l'entite courante du contexte admin.
         $comment = $context->getEntity()->getInstance();
-        // Vérifie le type d'entité attendu.
+
+        // Verifie le type d'entite attendu.
         if ($comment instanceof Comment) {
-            // Définit le statut refusé.
+            // Definit le statut desactive.
             $comment->setStatus(Comment::STATUS_REJECTED);
-            // Exécute la transaction SQL.
+            // Execute la transaction SQL.
             $this->entityManager->flush();
             // Affiche un flash de confirmation.
-            $this->addFlash('success', 'Commentaire refusé.');
+            $this->addFlash('success', 'Commentaire desactive.');
         }
 
         // Redirige vers la liste des commentaires.
